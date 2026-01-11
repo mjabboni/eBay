@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#part-d-class-balance-analysis" id="toc-part-d-class-balance-analysis" class="nav-link" data-scroll-target="#part-d-class-balance-analysis">Part d: Class Balance Analysis</a></li>
   <li><a href="#part-e-converting-variables-to-category-type" id="toc-part-e-converting-variables-to-category-type" class="nav-link" data-scroll-target="#part-e-converting-variables-to-category-type">Part e: Converting Variables to Category Type</a></li>
   <li><a href="#part-f-creating-dummy-variables" id="toc-part-f-creating-dummy-variables" class="nav-link" data-scroll-target="#part-f-creating-dummy-variables">Part f: Creating Dummy Variables</a></li>
-  <li><a href="#part-g-removing-outliers" id="toc-part-g-removing-outliers" class="nav-link" data-scroll-target="#part-g-removing-outliers">Part g: Removing Outliers</a></li>
+  <li><a href="#part-g-outlier-analysis" id="toc-part-g-outlier-analysis" class="nav-link" data-scroll-target="#part-g-outlier-analysis">Part g: Outlier Analysis</a></li>
   <li><a href="#part-h-data-partitioning-60-train-40-test" id="toc-part-h-data-partitioning-60-train-40-test" class="nav-link" data-scroll-target="#part-h-data-partitioning-60-train-40-test">Part h: Data Partitioning (60% Train / 40% Test)</a></li>
   <li><a href="#modeling-part-1-logistic-regression-with-all-variables" id="toc-modeling-part-1-logistic-regression-with-all-variables" class="nav-link" data-scroll-target="#modeling-part-1-logistic-regression-with-all-variables">Modeling Part 1: Logistic Regression with ALL Variables</a></li>
   <li><a href="#modeling-part-2-confusion-matrix-and-accuracy" id="toc-modeling-part-2-confusion-matrix-and-accuracy" class="nav-link" data-scroll-target="#modeling-part-2-confusion-matrix-and-accuracy">Modeling Part 2: Confusion Matrix and Accuracy</a></li>
@@ -156,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="part-a-import-packages-and-load-data" class="level2">
 <h2 class="anchored" data-anchor-id="part-a-import-packages-and-load-data">Part a: Import Packages and Load Data</h2>
-<div id="e64950ad" class="cell" data-execution_count="1">
+<div id="b93da75e" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn <span class="im">as</span> sk</span>
@@ -180,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 First 5 rows of the dataset:</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="40">
+<div class="cell-output cell-output-display" data-execution_count="66">
 <div>
 
 
@@ -263,7 +263,7 @@ First 5 rows of the dataset:</code></pre>
 </section>
 <section id="part-b-observe-variables-in-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="part-b-observe-variables-in-the-dataset">Part b: Observe Variables in the Dataset</h2>
-<div id="7fed8f22" class="cell" data-execution_count="2">
+<div id="4abf0489" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Data Types ---"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_df.dtypes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -279,13 +279,13 @@ Competitive       int64
 dtype: object</code></pre>
 </div>
 </div>
-<div id="5ed8b1eb" class="cell" data-execution_count="3">
+<div id="17222222" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Summary Statistics ---"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ebay_df.describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Summary Statistics ---</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="42">
+<div class="cell-output cell-output-display" data-execution_count="68">
 <div>
 
 
@@ -371,7 +371,7 @@ dtype: object</code></pre>
 </div>
 </div>
 </div>
-<div id="5952ea1c" class="cell" data-execution_count="4">
+<div id="d7f6b191" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Info about the dataset ---"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ebay_df.info()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -398,7 +398,7 @@ memory usage: 123.4+ KB</code></pre>
 <h2 class="anchored" data-anchor-id="part-c-explore-categorical-variables-vs-competitive-auctions">Part c: Explore Categorical Variables vs Competitive Auctions</h2>
 <section id="category-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="category-analysis">Category Analysis</h3>
-<div id="94220fab" class="cell" data-execution_count="5">
+<div id="bbb99a4c" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Category ---"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>category_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'Category'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>category_competitive <span class="op">=</span> category_competitive.sort_values(<span class="st">'mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
@@ -434,14 +434,14 @@ Category with MOST competitive auctions: Photography (84.62% competitive rate)</
 </section>
 <section id="currency-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="currency-analysis">Currency Analysis</h3>
-<div id="af3cd0dc" class="cell" data-execution_count="6">
+<div id="6387d574" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Currency ---"</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>currency_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'currency'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>currency_competitive</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Competitive Auctions by Currency ---</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="45">
+<div class="cell-output cell-output-display" data-execution_count="71">
 <div>
 
 
@@ -483,7 +483,7 @@ Category with MOST competitive auctions: Photography (84.62% competitive rate)</
 </section>
 <section id="end-day-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="end-day-analysis">End Day Analysis</h3>
-<div id="ef2d4de7" class="cell" data-execution_count="7">
+<div id="0716f559" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by End Day ---"</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>endday_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'endDay'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>endday_competitive <span class="op">=</span> endday_competitive.sort_values(<span class="st">'mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
@@ -508,14 +508,14 @@ Day with MOST competitive auctions: Mon (67.34% competitive rate)</code></pre>
 </section>
 <section id="duration-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="duration-analysis">Duration Analysis</h3>
-<div id="ae199db8" class="cell" data-execution_count="8">
+<div id="4f623831" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Duration ---"</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>duration_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'Duration'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>duration_competitive</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Competitive Auctions by Duration ---</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="47">
+<div class="cell-output cell-output-display" data-execution_count="73">
 <div>
 
 
@@ -569,7 +569,7 @@ Day with MOST competitive auctions: Mon (67.34% competitive rate)</code></pre>
 <section id="part-d-class-balance-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="part-d-class-balance-analysis">Part d: Class Balance Analysis</h2>
 <p>What percentage of auctions are competitive? Is there an imbalance problem?</p>
-<div id="2c9428db" class="cell" data-execution_count="9">
+<div id="2168e261" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>competitive_counts <span class="op">=</span> ebay_df.groupby(<span class="st">'Competitive'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'count'</span>])</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Count of Competitive vs Non-Competitive Auctions ---"</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(competitive_counts)</span>
@@ -599,7 +599,7 @@ Non-competitive auctions: 45.94%
 ✓ The classes are relatively balanced.</code></pre>
 </div>
 </div>
-<div id="34cf4c27" class="cell" data-execution_count="10">
+<div id="6bd9149e" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Violin plot: Distribution of OpenPrice by Competitive Status (outliers removed)</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove outliers using IQR method</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Q1 <span class="op">=</span> ebay_df[<span class="st">'OpenPrice'</span>].quantile(<span class="fl">0.25</span>)</span>
@@ -637,7 +637,7 @@ Non-competitive auctions: 45.94%
 </section>
 <section id="part-e-converting-variables-to-category-type" class="level2">
 <h2 class="anchored" data-anchor-id="part-e-converting-variables-to-category-type">Part e: Converting Variables to Category Type</h2>
-<div id="25f81b02" class="cell" data-execution_count="11">
+<div id="bc358b1a" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a copy for modeling</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> ebay_df.copy()</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -665,7 +665,7 @@ dtype: object</code></pre>
 </section>
 <section id="part-f-creating-dummy-variables" class="level2">
 <h2 class="anchored" data-anchor-id="part-f-creating-dummy-variables">Part f: Creating Dummy Variables</h2>
-<div id="022d15bc" class="cell" data-execution_count="12">
+<div id="3ce7736a" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dummy variables (dtype=int for statsmodels compatibility)</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> pd.get_dummies(ebay_model, prefix_sep<span class="op">=</span><span class="st">'_'</span>, drop_first<span class="op">=</span><span class="va">False</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -679,7 +679,7 @@ Columns after creating dummies:
 ['sellerRating', 'Duration', 'ClosePrice', 'OpenPrice', 'Category_Antique/Art/Craft', 'Category_Automotive', 'Category_Books', 'Category_Business/Industrial', 'Category_Clothing/Accessories', 'Category_Coins/Stamps', 'Category_Collectibles', 'Category_Computer', 'Category_Electronics', 'Category_EverythingElse', 'Category_Health/Beauty', 'Category_Home/Garden', 'Category_Jewelry', 'Category_Music/Movie/Game', 'Category_Photography', 'Category_Pottery/Glass', 'Category_SportingGoods', 'Category_Toys/Hobbies', 'currency_EUR', 'currency_GBP', 'currency_US', 'endDay_Fri', 'endDay_Mon', 'endDay_Sat', 'endDay_Sun', 'endDay_Thu', 'endDay_Tue', 'endDay_Wed', 'Competitive_0', 'Competitive_1']</code></pre>
 </div>
 </div>
-<div id="a1d43aab" class="cell" data-execution_count="13">
+<div id="7a0761e5" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop reference categories (first category for each variable)</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Category_Automotive, currency_EUR, endDay_Mon</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>columns_to_drop <span class="op">=</span> [<span class="st">'Category_Automotive'</span>, <span class="st">'currency_EUR'</span>, <span class="st">'endDay_Mon'</span>, </span>
@@ -704,49 +704,41 @@ Final columns for modeling:
 </div>
 </div>
 </section>
-<section id="part-g-removing-outliers" class="level2">
-<h2 class="anchored" data-anchor-id="part-g-removing-outliers">Part g: Removing Outliers</h2>
-<div id="16f90431" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove outliers using IQR method for numerical columns</span></span>
+<section id="part-g-outlier-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="part-g-outlier-analysis">Part g: Outlier Analysis</h2>
+<div id="53b7b902" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify outliers using IQR method for numerical columns (but keep them in the dataset)</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>numerical_cols <span class="op">=</span> [<span class="st">'OpenPrice'</span>, <span class="st">'ClosePrice'</span>, <span class="st">'sellerRating'</span>]</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Dataset size before removing outliers: </span><span class="sc">{</span><span class="bu">len</span>(ebay_model)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a mask for non-outliers</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>outlier_mask <span class="op">=</span> pd.Series([<span class="va">True</span>] <span class="op">*</span> <span class="bu">len</span>(ebay_model))</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> numerical_cols:</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    Q1 <span class="op">=</span> ebay_model[col].quantile(<span class="fl">0.25</span>)</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    Q3 <span class="op">=</span> ebay_model[col].quantile(<span class="fl">0.75</span>)</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    IQR <span class="op">=</span> Q3 <span class="op">-</span> Q1</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    lower_bound <span class="op">=</span> Q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> IQR</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    upper_bound <span class="op">=</span> Q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> IQR</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    col_mask <span class="op">=</span> (ebay_model[col] <span class="op">&gt;=</span> lower_bound) <span class="op">&amp;</span> (ebay_model[col] <span class="op">&lt;=</span> upper_bound)</span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    outliers_in_col <span class="op">=</span> (<span class="op">~</span>col_mask).<span class="bu">sum</span>()</span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>outliers_in_col<span class="sc">}</span><span class="ss"> outliers (range: </span><span class="sc">{</span>lower_bound<span class="sc">:.2f}</span><span class="ss"> to </span><span class="sc">{</span>upper_bound<span class="sc">:.2f}</span><span class="ss">)"</span>)</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>    outlier_mask <span class="op">=</span> outlier_mask <span class="op">&amp;</span> col_mask</span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the mask to remove outliers</span></span>
-<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> ebay_model[outlier_mask].copy()</span>
-<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Dataset size after removing outliers: </span><span class="sc">{</span><span class="bu">len</span>(ebay_model)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total records removed: </span><span class="sc">{</span>(<span class="op">~</span>outlier_mask)<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Dataset size: </span><span class="sc">{</span><span class="bu">len</span>(ebay_model)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Outlier detection using IQR method:"</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> numerical_cols:</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    Q1 <span class="op">=</span> ebay_model[col].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    Q3 <span class="op">=</span> ebay_model[col].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    IQR <span class="op">=</span> Q3 <span class="op">-</span> Q1</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    lower_bound <span class="op">=</span> Q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> IQR</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    upper_bound <span class="op">=</span> Q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> IQR</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    outliers_in_col <span class="op">=</span> ((ebay_model[col] <span class="op">&lt;</span> lower_bound) <span class="op">|</span> (ebay_model[col] <span class="op">&gt;</span> upper_bound)).<span class="bu">sum</span>()</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>outliers_in_col<span class="sc">}</span><span class="ss"> outliers detected (range: </span><span class="sc">{</span>lower_bound<span class="sc">:.2f}</span><span class="ss"> to </span><span class="sc">{</span>upper_bound<span class="sc">:.2f}</span><span class="ss">)"</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✓ Outliers are KEPT in the dataset for modeling."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Dataset size before removing outliers: 1972
-  OpenPrice: 206 outliers (range: -11.91 to 23.13)
-  ClosePrice: 250 outliers (range: -29.73 to 62.64)
-  sellerRating: 181 outliers (range: -3582.50 to 7557.50)
+<pre><code>Dataset size: 1972
 
-Dataset size after removing outliers: 1481
-Total records removed: 491</code></pre>
+Outlier detection using IQR method:
+  OpenPrice: 206 outliers detected (range: -11.91 to 23.13)
+  ClosePrice: 250 outliers detected (range: -29.73 to 62.64)
+  sellerRating: 181 outliers detected (range: -3582.50 to 7557.50)
+
+✓ Outliers are KEPT in the dataset for modeling.</code></pre>
 </div>
 </div>
 </section>
 <section id="part-h-data-partitioning-60-train-40-test" class="level2">
 <h2 class="anchored" data-anchor-id="part-h-data-partitioning-60-train-40-test">Part h: Data Partitioning (60% Train / 40% Test)</h2>
-<div id="b6fda786" class="cell" data-execution_count="15">
+<div id="c0ff4160" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define X (features) and y (target)</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert y to int to ensure compatibility with statsmodels</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> ebay_model[<span class="st">'Competitive'</span>].astype(<span class="bu">int</span>)</span>
@@ -760,14 +752,14 @@ Total records removed: 491</code></pre>
 <span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training set size: </span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="op">/</span><span class="bu">len</span>(X)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
 <span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test set size: </span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="op">/</span><span class="bu">len</span>(X)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Training set size: 888 (60.0%)
-Test set size: 593 (40.0%)</code></pre>
+<pre><code>Training set size: 1183 (60.0%)
+Test set size: 789 (40.0%)</code></pre>
 </div>
 </div>
 </section>
 <section id="modeling-part-1-logistic-regression-with-all-variables" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-part-1-logistic-regression-with-all-variables">Modeling Part 1: Logistic Regression with ALL Variables</h2>
-<div id="13190072" class="cell" data-execution_count="16">
+<div id="5ef258eb" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using statsmodels for detailed output</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>X_train_const <span class="op">=</span> sm.add_constant(X_train)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>X_test_const <span class="op">=</span> sm.add_constant(X_test)</span>
@@ -782,55 +774,55 @@ Test set size: 593 (40.0%)</code></pre>
 <pre><code>--- Logistic Regression Summary (with all variables including ClosePrice) ---
                            Logit Regression Results                           
 ==============================================================================
-Dep. Variable:            Competitive   No. Observations:                  888
-Model:                          Logit   Df Residuals:                      858
+Dep. Variable:            Competitive   No. Observations:                 1183
+Model:                          Logit   Df Residuals:                     1153
 Method:                           MLE   Df Model:                           29
-Date:                Sun, 11 Jan 2026   Pseudo R-squ.:               -0.004004
-Time:                        12:49:55   Log-Likelihood:                -615.51
-converged:                      False   LL-Null:                       -613.06
+Date:                Sun, 11 Jan 2026   Pseudo R-squ.:               -0.004879
+Time:                        12:53:05   Log-Likelihood:                -819.99
+converged:                      False   LL-Null:                       -816.01
 Covariance Type:            nonrobust   LLR p-value:                     1.000
 =================================================================================================
                                     coef    std err          z      P&gt;|z|      [0.025      0.975]
 -------------------------------------------------------------------------------------------------
-const                                  0      0.533          0      1.000      -1.044       1.044
-sellerRating                           0    4.8e-05          0      1.000    -9.4e-05     9.4e-05
-Duration                               0      0.041          0      1.000      -0.080       0.080
-ClosePrice                             0      0.006          0      1.000      -0.012       0.012
-OpenPrice                              0      0.016          0      1.000      -0.032       0.032
-Category_Antique/Art/Craft             0      0.426          0      1.000      -0.834       0.834
-Category_Books                         0      0.506          0      1.000      -0.991       0.991
-Category_Business/Industrial           0      0.980          0      1.000      -1.921       1.921
-Category_Clothing/Accessories          0      0.470          0      1.000      -0.920       0.920
-Category_Coins/Stamps                  0      0.634          0      1.000      -1.242       1.242
-Category_Collectibles                  0      0.414          0      1.000      -0.811       0.811
-Category_Computer                      0      0.639          0      1.000      -1.252       1.252
-Category_Electronics                   0      0.595          0      1.000      -1.166       1.166
-Category_EverythingElse                0      0.804          0      1.000      -1.576       1.576
-Category_Health/Beauty                 0      0.506          0      1.000      -0.991       0.991
-Category_Home/Garden                   0      0.472          0      1.000      -0.926       0.926
-Category_Jewelry                       0      0.512          0      1.000      -1.003       1.003
-Category_Music/Movie/Game              0      0.400          0      1.000      -0.783       0.783
-Category_Photography                   0      1.071          0      1.000      -2.099       2.099
-Category_Pottery/Glass                 0      0.851          0      1.000      -1.668       1.668
-Category_SportingGoods                 0      0.517          0      1.000      -1.014       1.014
-Category_Toys/Hobbies                  0      0.425          0      1.000      -0.833       0.833
-currency_GBP                           0      0.450          0      1.000      -0.881       0.881
-currency_US                            0      0.209          0      1.000      -0.410       0.410
-endDay_Fri                             0      0.234          0      1.000      -0.459       0.459
-endDay_Sat                             0      0.227          0      1.000      -0.444       0.444
-endDay_Sun                             0      0.232          0      1.000      -0.455       0.455
-endDay_Thu                             0      0.418          0      1.000      -0.819       0.819
-endDay_Tue                             0      0.273          0      1.000      -0.536       0.536
-endDay_Wed                             0      0.388          0      1.000      -0.760       0.760
+const                                  0      0.377          0      1.000      -0.739       0.739
+sellerRating                           0   1.16e-05          0      1.000   -2.28e-05    2.28e-05
+Duration                               0      0.035          0      1.000      -0.069       0.069
+ClosePrice                             0      0.001          0      1.000      -0.002       0.002
+OpenPrice                              0      0.002          0      1.000      -0.003       0.003
+Category_Antique/Art/Craft             0      0.311          0      1.000      -0.610       0.610
+Category_Books                         0      0.412          0      1.000      -0.807       0.807
+Category_Business/Industrial           0      0.642          0      1.000      -1.259       1.259
+Category_Clothing/Accessories          0      0.330          0      1.000      -0.647       0.647
+Category_Coins/Stamps                  0      0.512          0      1.000      -1.004       1.004
+Category_Collectibles                  0      0.283          0      1.000      -0.555       0.555
+Category_Computer                      0      0.473          0      1.000      -0.927       0.927
+Category_Electronics                   0      0.389          0      1.000      -0.762       0.762
+Category_EverythingElse                0      0.710          0      1.000      -1.391       1.391
+Category_Health/Beauty                 0      0.394          0      1.000      -0.772       0.772
+Category_Home/Garden                   0      0.338          0      1.000      -0.663       0.663
+Category_Jewelry                       0      0.366          0      1.000      -0.718       0.718
+Category_Music/Movie/Game              0      0.265          0      1.000      -0.519       0.519
+Category_Photography                   0      0.741          0      1.000      -1.452       1.452
+Category_Pottery/Glass                 0      0.673          0      1.000      -1.318       1.318
+Category_SportingGoods                 0      0.339          0      1.000      -0.665       0.665
+Category_Toys/Hobbies                  0      0.279          0      1.000      -0.546       0.546
+currency_GBP                           0      0.435          0      1.000      -0.853       0.853
+currency_US                            0      0.185          0      1.000      -0.364       0.364
+endDay_Fri                             0      0.200          0      1.000      -0.393       0.393
+endDay_Sat                             0      0.191          0      1.000      -0.375       0.375
+endDay_Sun                             0      0.189          0      1.000      -0.371       0.371
+endDay_Thu                             0      0.403          0      1.000      -0.789       0.789
+endDay_Tue                             0      0.242          0      1.000      -0.475       0.475
+endDay_Wed                             0      0.341          0      1.000      -0.667       0.667
 =================================================================================================</code></pre>
 </div>
 </div>
-<div id="5bc2987d" class="cell" data-execution_count="17">
+<div id="a837e03d" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using sklearn for predictions</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>lr_model <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">202</span>)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>lr_model.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="56">
-<style>#sk-container-id-2 {
+<div class="cell-output cell-output-display" data-execution_count="82">
+<style>#sk-container-id-3 {
   /* Definition of color scheme common for light and dark mode */
   --sklearn-color-text: #000;
   --sklearn-color-text-muted: #666;
@@ -861,15 +853,15 @@ endDay_Wed                             0      0.388          0      1.000      -
   }
 }
 
-#sk-container-id-2 {
+#sk-container-id-3 {
   color: var(--sklearn-color-text);
 }
 
-#sk-container-id-2 pre {
+#sk-container-id-3 pre {
   padding: 0;
 }
 
-#sk-container-id-2 input.sk-hidden--visually {
+#sk-container-id-3 input.sk-hidden--visually {
   border: 0;
   clip: rect(1px 1px 1px 1px);
   clip: rect(1px, 1px, 1px, 1px);
@@ -881,7 +873,7 @@ endDay_Wed                             0      0.388          0      1.000      -
   width: 1px;
 }
 
-#sk-container-id-2 div.sk-dashed-wrapped {
+#sk-container-id-3 div.sk-dashed-wrapped {
   border: 1px dashed var(--sklearn-color-line);
   margin: 0 0.4em 0.5em 0.4em;
   box-sizing: border-box;
@@ -889,7 +881,7 @@ endDay_Wed                             0      0.388          0      1.000      -
   background-color: var(--sklearn-color-background);
 }
 
-#sk-container-id-2 div.sk-container {
+#sk-container-id-3 div.sk-container {
   /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
      but bootstrap.min.css set `[hidden] { display: none !important; }`
      so we also need the `!important` here to be able to override the
@@ -899,7 +891,7 @@ endDay_Wed                             0      0.388          0      1.000      -
   position: relative;
 }
 
-#sk-container-id-2 div.sk-text-repr-fallback {
+#sk-container-id-3 div.sk-text-repr-fallback {
   display: none;
 }
 
@@ -915,14 +907,14 @@ div.sk-item {
 
 /* Parallel-specific style estimator block */
 
-#sk-container-id-2 div.sk-parallel-item::after {
+#sk-container-id-3 div.sk-parallel-item::after {
   content: "";
   width: 100%;
   border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
   flex-grow: 1;
 }
 
-#sk-container-id-2 div.sk-parallel {
+#sk-container-id-3 div.sk-parallel {
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -930,28 +922,28 @@ div.sk-item {
   position: relative;
 }
 
-#sk-container-id-2 div.sk-parallel-item {
+#sk-container-id-3 div.sk-parallel-item {
   display: flex;
   flex-direction: column;
 }
 
-#sk-container-id-2 div.sk-parallel-item:first-child::after {
+#sk-container-id-3 div.sk-parallel-item:first-child::after {
   align-self: flex-end;
   width: 50%;
 }
 
-#sk-container-id-2 div.sk-parallel-item:last-child::after {
+#sk-container-id-3 div.sk-parallel-item:last-child::after {
   align-self: flex-start;
   width: 50%;
 }
 
-#sk-container-id-2 div.sk-parallel-item:only-child::after {
+#sk-container-id-3 div.sk-parallel-item:only-child::after {
   width: 0;
 }
 
 /* Serial-specific style estimator block */
 
-#sk-container-id-2 div.sk-serial {
+#sk-container-id-3 div.sk-serial {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -969,14 +961,14 @@ clickable and can be expanded/collapsed.
 
 /* Pipeline and ColumnTransformer style (default) */
 
-#sk-container-id-2 div.sk-toggleable {
+#sk-container-id-3 div.sk-toggleable {
   /* Default theme specific background. It is overwritten whether we have a
   specific estimator or a Pipeline/ColumnTransformer */
   background-color: var(--sklearn-color-background);
 }
 
 /* Toggleable label */
-#sk-container-id-2 label.sk-toggleable__label {
+#sk-container-id-3 label.sk-toggleable__label {
   cursor: pointer;
   display: flex;
   width: 100%;
@@ -989,13 +981,13 @@ clickable and can be expanded/collapsed.
   gap: 0.5em;
 }
 
-#sk-container-id-2 label.sk-toggleable__label .caption {
+#sk-container-id-3 label.sk-toggleable__label .caption {
   font-size: 0.6rem;
   font-weight: lighter;
   color: var(--sklearn-color-text-muted);
 }
 
-#sk-container-id-2 label.sk-toggleable__label-arrow:before {
+#sk-container-id-3 label.sk-toggleable__label-arrow:before {
   /* Arrow on the left of the label */
   content: "▸";
   float: left;
@@ -1003,25 +995,25 @@ clickable and can be expanded/collapsed.
   color: var(--sklearn-color-icon);
 }
 
-#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {
+#sk-container-id-3 label.sk-toggleable__label-arrow:hover:before {
   color: var(--sklearn-color-text);
 }
 
 /* Toggleable content - dropdown */
 
-#sk-container-id-2 div.sk-toggleable__content {
+#sk-container-id-3 div.sk-toggleable__content {
   display: none;
   text-align: left;
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-2 div.sk-toggleable__content.fitted {
+#sk-container-id-3 div.sk-toggleable__content.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-2 div.sk-toggleable__content pre {
+#sk-container-id-3 div.sk-toggleable__content pre {
   margin: 0.2em;
   border-radius: 0.25em;
   color: var(--sklearn-color-text);
@@ -1029,79 +1021,79 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-2 div.sk-toggleable__content.fitted pre {
+#sk-container-id-3 div.sk-toggleable__content.fitted pre {
   /* unfitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+#sk-container-id-3 input.sk-toggleable__control:checked~div.sk-toggleable__content {
   /* Expand drop-down */
   display: block;
   width: 100%;
   overflow: visible;
 }
 
-#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+#sk-container-id-3 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
   content: "▾";
 }
 
 /* Pipeline/ColumnTransformer-specific style */
 
-#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-3 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-2 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-3 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator-specific style */
 
 /* Colorize estimator box */
-#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-3 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-2 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-3 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
-#sk-container-id-2 div.sk-label label.sk-toggleable__label,
-#sk-container-id-2 div.sk-label label {
+#sk-container-id-3 div.sk-label label.sk-toggleable__label,
+#sk-container-id-3 div.sk-label label {
   /* The background is the default theme color */
   color: var(--sklearn-color-text-on-default-background);
 }
 
 /* On hover, darken the color of the background */
-#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {
+#sk-container-id-3 div.sk-label:hover label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
 /* Label box, darken color on hover, fitted */
-#sk-container-id-2 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+#sk-container-id-3 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator label */
 
-#sk-container-id-2 div.sk-label label {
+#sk-container-id-3 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
   display: inline-block;
   line-height: 1.2em;
 }
 
-#sk-container-id-2 div.sk-label-container {
+#sk-container-id-3 div.sk-label-container {
   text-align: center;
 }
 
 /* Estimator-specific */
-#sk-container-id-2 div.sk-estimator {
+#sk-container-id-3 div.sk-estimator {
   font-family: monospace;
   border: 1px dotted var(--sklearn-color-border-box);
   border-radius: 0.25em;
@@ -1111,18 +1103,18 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-2 div.sk-estimator.fitted {
+#sk-container-id-3 div.sk-estimator.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
 /* on hover */
-#sk-container-id-2 div.sk-estimator:hover {
+#sk-container-id-3 div.sk-estimator:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-2 div.sk-estimator.fitted:hover {
+#sk-container-id-3 div.sk-estimator.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
@@ -1210,7 +1202,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 /* "?"-specific style due to the `<a>` HTML tag */
 
-#sk-container-id-2 a.estimator_doc_link {
+#sk-container-id-3 a.estimator_doc_link {
   float: right;
   font-size: 1rem;
   line-height: 1em;
@@ -1225,21 +1217,21 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   border: var(--sklearn-color-unfitted-level-1) 1pt solid;
 }
 
-#sk-container-id-2 a.estimator_doc_link.fitted {
+#sk-container-id-3 a.estimator_doc_link.fitted {
   /* fitted */
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
 
 /* On hover */
-#sk-container-id-2 a.estimator_doc_link:hover {
+#sk-container-id-3 a.estimator_doc_link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
   color: var(--sklearn-color-background);
   text-decoration: none;
 }
 
-#sk-container-id-2 a.estimator_doc_link.fitted:hover {
+#sk-container-id-3 a.estimator_doc_link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
@@ -1307,7 +1299,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     height: 14px;
     cursor: pointer;
 }
-</style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression(max_iter=1000, random_state=202)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked=""><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LogisticRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression(max_iter=1000, random_state=202)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked=""><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LogisticRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1442,7 +1434,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </section>
 <section id="modeling-part-2-confusion-matrix-and-accuracy" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-part-2-confusion-matrix-and-accuracy">Modeling Part 2: Confusion Matrix and Accuracy</h2>
-<div id="786918b6" class="cell" data-execution_count="18">
+<div id="0b3429c7" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions on test set</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> lr_model.predict(X_test)</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1461,13 +1453,13 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <pre><code>--- Confusion Matrix (Validation Data) ---
                  Predicted
                  0       1
-Actual 0       212      61
-       1        69     251
+Actual 0       293      70
+       1       107     319
 
-Accuracy: 0.7808 (78.08%)</code></pre>
+Accuracy: 0.7757 (77.57%)</code></pre>
 </div>
 </div>
-<div id="e1300bb5" class="cell" data-execution_count="19">
+<div id="aaafc6dd" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix Plot</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, </span>
@@ -1487,7 +1479,7 @@ Accuracy: 0.7808 (78.08%)</code></pre>
 </div>
 </div>
 </div>
-<div id="6e81caa0" class="cell" data-execution_count="20">
+<div id="b36d7bc3" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Classification Report ---"</span>)</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1495,12 +1487,12 @@ Accuracy: 0.7808 (78.08%)</code></pre>
 <pre><code>--- Classification Report ---
               precision    recall  f1-score   support
 
-           0       0.75      0.78      0.77       273
-           1       0.80      0.78      0.79       320
+           0       0.73      0.81      0.77       363
+           1       0.82      0.75      0.78       426
 
-    accuracy                           0.78       593
-   macro avg       0.78      0.78      0.78       593
-weighted avg       0.78      0.78      0.78       593
+    accuracy                           0.78       789
+   macro avg       0.78      0.78      0.78       789
+weighted avg       0.78      0.78      0.78       789
 </code></pre>
 </div>
 </div>
@@ -1520,7 +1512,7 @@ weighted avg       0.78      0.78      0.78       593
 </section>
 <section id="modeling-part-4-model-without-closeprice" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-part-4-model-without-closeprice">Modeling Part 4: Model WITHOUT ClosePrice</h2>
-<div id="69951452" class="cell" data-execution_count="21">
+<div id="c5834ab0" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove ClosePrice from features</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>X_no_close <span class="op">=</span> X.drop(columns<span class="op">=</span>[<span class="st">'ClosePrice'</span>])</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1536,7 +1528,7 @@ weighted avg       0.78      0.78      0.78       593
 <span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions</span></span>
 <span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>y_pred_nc <span class="op">=</span> lr_model_nc.predict(X_test_nc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="119e8ed0" class="cell" data-execution_count="22">
+<div id="f7e9c021" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>cm_nc <span class="op">=</span> confusion_matrix(y_test_nc, y_pred_nc)</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Confusion Matrix WITHOUT ClosePrice ---"</span>)</span>
@@ -1552,13 +1544,13 @@ weighted avg       0.78      0.78      0.78       593
 <pre><code>--- Confusion Matrix WITHOUT ClosePrice ---
                  Predicted
                  0       1
-Actual 0       163     110
-       1       100     220
+Actual 0       209     154
+       1       130     296
 
-Accuracy WITHOUT ClosePrice: 0.6459 (64.59%)</code></pre>
+Accuracy WITHOUT ClosePrice: 0.6401 (64.01%)</code></pre>
 </div>
 </div>
-<div id="9a335c7d" class="cell" data-execution_count="23">
+<div id="209a0d09" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix Plot (Without ClosePrice)</span></span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm_nc, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Oranges'</span>, </span>
@@ -1578,7 +1570,7 @@ Accuracy WITHOUT ClosePrice: 0.6459 (64.59%)</code></pre>
 </div>
 </div>
 </div>
-<div id="346e8bd9" class="cell" data-execution_count="24">
+<div id="c3930e9a" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change in accuracy</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>accuracy_change <span class="op">=</span> accuracy_nc <span class="op">-</span> accuracy</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"--- Comparison ---"</span>)</span>
@@ -1594,16 +1586,16 @@ Accuracy WITHOUT ClosePrice: 0.6459 (64.59%)</code></pre>
 <span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✓ Accuracy changed by </span><span class="sc">{</span>accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">% after removing ClosePrice."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Comparison ---
-Accuracy WITH ClosePrice:    0.7808 (78.08%)
-Accuracy WITHOUT ClosePrice: 0.6459 (64.59%)
-Change in Accuracy:          -0.1349 (-13.49%)
+Accuracy WITH ClosePrice:    0.7757 (77.57%)
+Accuracy WITHOUT ClosePrice: 0.6401 (64.01%)
+Change in Accuracy:          -0.1356 (-13.56%)
 
-⚠️  Accuracy DECREASED by 13.49% after removing ClosePrice.
+⚠️  Accuracy DECREASED by 13.56% after removing ClosePrice.
    This confirms that ClosePrice was contributing significantly to the model,
    but for practical predictions, the model without ClosePrice is more appropriate.</code></pre>
 </div>
 </div>
-<div id="95c9755c" class="cell" data-execution_count="25">
+<div id="544f9919" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report for model without ClosePrice</span></span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Classification Report (Without ClosePrice) ---"</span>)</span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test_nc, y_pred_nc))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1611,16 +1603,16 @@ Change in Accuracy:          -0.1349 (-13.49%)
 <pre><code>--- Classification Report (Without ClosePrice) ---
               precision    recall  f1-score   support
 
-           0       0.62      0.60      0.61       273
-           1       0.67      0.69      0.68       320
+           0       0.62      0.58      0.60       363
+           1       0.66      0.69      0.68       426
 
-    accuracy                           0.65       593
-   macro avg       0.64      0.64      0.64       593
-weighted avg       0.65      0.65      0.65       593
+    accuracy                           0.64       789
+   macro avg       0.64      0.64      0.64       789
+weighted avg       0.64      0.64      0.64       789
 </code></pre>
 </div>
 </div>
-<div id="c93cd0a8" class="cell" data-execution_count="26">
+<div id="5f907f2f" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Statsmodels summary for the model without ClosePrice</span></span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Logistic Regression Summary (Without ClosePrice) ---"</span>)</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>X_train_nc_const <span class="op">=</span> sm.add_constant(X_train_nc)</span>
@@ -1631,45 +1623,45 @@ weighted avg       0.65      0.65      0.65       593
 <pre><code>--- Logistic Regression Summary (Without ClosePrice) ---
                            Logit Regression Results                           
 ==============================================================================
-Dep. Variable:            Competitive   No. Observations:                  888
-Model:                          Logit   Df Residuals:                      859
+Dep. Variable:            Competitive   No. Observations:                 1183
+Model:                          Logit   Df Residuals:                     1154
 Method:                           MLE   Df Model:                           28
-Date:                Sun, 11 Jan 2026   Pseudo R-squ.:               -0.004004
-Time:                        12:49:56   Log-Likelihood:                -615.51
-converged:                      False   LL-Null:                       -613.06
+Date:                Sun, 11 Jan 2026   Pseudo R-squ.:               -0.004879
+Time:                        12:53:06   Log-Likelihood:                -819.99
+converged:                      False   LL-Null:                       -816.01
 Covariance Type:            nonrobust   LLR p-value:                     1.000
 =================================================================================================
                                     coef    std err          z      P&gt;|z|      [0.025      0.975]
 -------------------------------------------------------------------------------------------------
-const                                  0      0.522          0      1.000      -1.022       1.022
-sellerRating                           0    4.7e-05          0      1.000   -9.21e-05    9.21e-05
-Duration                               0      0.041          0      1.000      -0.080       0.080
-OpenPrice                              0      0.016          0      1.000      -0.031       0.031
-Category_Antique/Art/Craft             0      0.425          0      1.000      -0.834       0.834
-Category_Books                         0      0.505          0      1.000      -0.990       0.990
-Category_Business/Industrial           0      0.979          0      1.000      -1.919       1.919
-Category_Clothing/Accessories          0      0.468          0      1.000      -0.917       0.917
-Category_Coins/Stamps                  0      0.632          0      1.000      -1.239       1.239
-Category_Collectibles                  0      0.413          0      1.000      -0.810       0.810
-Category_Computer                      0      0.639          0      1.000      -1.252       1.252
-Category_Electronics                   0      0.592          0      1.000      -1.161       1.161
-Category_EverythingElse                0      0.804          0      1.000      -1.575       1.575
-Category_Health/Beauty                 0      0.505          0      1.000      -0.990       0.990
-Category_Home/Garden                   0      0.469          0      1.000      -0.918       0.918
-Category_Jewelry                       0      0.511          0      1.000      -1.002       1.002
-Category_Music/Movie/Game              0      0.400          0      1.000      -0.783       0.783
-Category_Photography                   0      1.071          0      1.000      -2.098       2.098
-Category_Pottery/Glass                 0      0.851          0      1.000      -1.668       1.668
-Category_SportingGoods                 0      0.514          0      1.000      -1.008       1.008
-Category_Toys/Hobbies                  0      0.425          0      1.000      -0.833       0.833
-currency_GBP                           0      0.449          0      1.000      -0.881       0.881
-currency_US                            0      0.208          0      1.000      -0.408       0.408
-endDay_Fri                             0      0.234          0      1.000      -0.458       0.458
-endDay_Sat                             0      0.226          0      1.000      -0.443       0.443
-endDay_Sun                             0      0.232          0      1.000      -0.454       0.454
-endDay_Thu                             0      0.418          0      1.000      -0.819       0.819
-endDay_Tue                             0      0.273          0      1.000      -0.535       0.535
-endDay_Wed                             0      0.388          0      1.000      -0.760       0.760
+const                                  0      0.375          0      1.000      -0.735       0.735
+sellerRating                           0   1.16e-05          0      1.000   -2.27e-05    2.27e-05
+Duration                               0      0.035          0      1.000      -0.069       0.069
+OpenPrice                              0      0.002          0      1.000      -0.003       0.003
+Category_Antique/Art/Craft             0      0.311          0      1.000      -0.609       0.609
+Category_Books                         0      0.412          0      1.000      -0.807       0.807
+Category_Business/Industrial           0      0.642          0      1.000      -1.259       1.259
+Category_Clothing/Accessories          0      0.330          0      1.000      -0.646       0.646
+Category_Coins/Stamps                  0      0.512          0      1.000      -1.004       1.004
+Category_Collectibles                  0      0.283          0      1.000      -0.555       0.555
+Category_Computer                      0      0.473          0      1.000      -0.927       0.927
+Category_Electronics                   0      0.387          0      1.000      -0.758       0.758
+Category_EverythingElse                0      0.709          0      1.000      -1.390       1.390
+Category_Health/Beauty                 0      0.393          0      1.000      -0.771       0.771
+Category_Home/Garden                   0      0.338          0      1.000      -0.663       0.663
+Category_Jewelry                       0      0.366          0      1.000      -0.718       0.718
+Category_Music/Movie/Game              0      0.264          0      1.000      -0.518       0.518
+Category_Photography                   0      0.740          0      1.000      -1.451       1.451
+Category_Pottery/Glass                 0      0.672          0      1.000      -1.318       1.318
+Category_SportingGoods                 0      0.335          0      1.000      -0.657       0.657
+Category_Toys/Hobbies                  0      0.279          0      1.000      -0.546       0.546
+currency_GBP                           0      0.435          0      1.000      -0.853       0.853
+currency_US                            0      0.185          0      1.000      -0.363       0.363
+endDay_Fri                             0      0.200          0      1.000      -0.393       0.393
+endDay_Sat                             0      0.191          0      1.000      -0.374       0.374
+endDay_Sun                             0      0.189          0      1.000      -0.370       0.370
+endDay_Thu                             0      0.402          0      1.000      -0.789       0.789
+endDay_Tue                             0      0.242          0      1.000      -0.474       0.474
+endDay_Wed                             0      0.340          0      1.000      -0.667       0.667
 =================================================================================================</code></pre>
 </div>
 </div>
