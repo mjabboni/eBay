@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="MISY 441-172">
+<meta name="dcterms.date" content="2026-01-11">
+
+<title>eBay Auction Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="eBay_analysis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="eBay_analysis_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="eBay_analysis_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="eBay_analysis_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="eBay_analysis_files/libs/quarto-html/popper.min.js"></script>
+<script src="eBay_analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="eBay_analysis_files/libs/quarto-html/anchor.min.js"></script>
+<link href="eBay_analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="eBay_analysis_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="eBay_analysis_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="eBay_analysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="eBay_analysis_files/libs/bootstrap/bootstrap-4d7f0bce1131f3e5f9547cd857cfbfc8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#business-problem" id="toc-business-problem" class="nav-link active" data-scroll-target="#business-problem">Business Problem</a></li>
+  <li><a href="#part-a-import-packages-and-load-data" id="toc-part-a-import-packages-and-load-data" class="nav-link" data-scroll-target="#part-a-import-packages-and-load-data">Part a: Import Packages and Load Data</a></li>
+  <li><a href="#part-b-observe-variables-in-the-dataset" id="toc-part-b-observe-variables-in-the-dataset" class="nav-link" data-scroll-target="#part-b-observe-variables-in-the-dataset">Part b: Observe Variables in the Dataset</a></li>
+  <li><a href="#part-c-explore-categorical-variables-vs-competitive-auctions" id="toc-part-c-explore-categorical-variables-vs-competitive-auctions" class="nav-link" data-scroll-target="#part-c-explore-categorical-variables-vs-competitive-auctions">Part c: Explore Categorical Variables vs Competitive Auctions</a>
+  <ul class="collapse">
+  <li><a href="#category-analysis" id="toc-category-analysis" class="nav-link" data-scroll-target="#category-analysis">Category Analysis</a></li>
+  <li><a href="#currency-analysis" id="toc-currency-analysis" class="nav-link" data-scroll-target="#currency-analysis">Currency Analysis</a></li>
+  <li><a href="#end-day-analysis" id="toc-end-day-analysis" class="nav-link" data-scroll-target="#end-day-analysis">End Day Analysis</a></li>
+  <li><a href="#duration-analysis" id="toc-duration-analysis" class="nav-link" data-scroll-target="#duration-analysis">Duration Analysis</a></li>
+  </ul></li>
+  <li><a href="#part-d-class-balance-analysis" id="toc-part-d-class-balance-analysis" class="nav-link" data-scroll-target="#part-d-class-balance-analysis">Part d: Class Balance Analysis</a></li>
+  <li><a href="#part-e-converting-variables-to-category-type" id="toc-part-e-converting-variables-to-category-type" class="nav-link" data-scroll-target="#part-e-converting-variables-to-category-type">Part e: Converting Variables to Category Type</a></li>
+  <li><a href="#part-f-creating-dummy-variables" id="toc-part-f-creating-dummy-variables" class="nav-link" data-scroll-target="#part-f-creating-dummy-variables">Part f: Creating Dummy Variables</a></li>
+  <li><a href="#part-g-data-partitioning-60-train-40-test" id="toc-part-g-data-partitioning-60-train-40-test" class="nav-link" data-scroll-target="#part-g-data-partitioning-60-train-40-test">Part g: Data Partitioning (60% Train / 40% Test)</a></li>
+  <li><a href="#modeling-part-1-logistic-regression-with-all-variables" id="toc-modeling-part-1-logistic-regression-with-all-variables" class="nav-link" data-scroll-target="#modeling-part-1-logistic-regression-with-all-variables">Modeling Part 1: Logistic Regression with ALL Variables</a></li>
+  <li><a href="#modeling-part-2-confusion-matrix-and-accuracy" id="toc-modeling-part-2-confusion-matrix-and-accuracy" class="nav-link" data-scroll-target="#modeling-part-2-confusion-matrix-and-accuracy">Modeling Part 2: Confusion Matrix and Accuracy</a></li>
+  <li><a href="#modeling-part-3-challenge-of-using-closeprice" id="toc-modeling-part-3-challenge-of-using-closeprice" class="nav-link" data-scroll-target="#modeling-part-3-challenge-of-using-closeprice">Modeling Part 3: Challenge of Using ClosePrice</a>
+  <ul class="collapse">
+  <li><a href="#key-issues" id="toc-key-issues" class="nav-link" data-scroll-target="#key-issues">Key Issues:</a></li>
+  </ul></li>
+  <li><a href="#modeling-part-4-model-without-closeprice" id="toc-modeling-part-4-model-without-closeprice" class="nav-link" data-scroll-target="#modeling-part-4-model-without-closeprice">Modeling Part 4: Model WITHOUT ClosePrice</a></li>
+  <li><a href="#confusion-matrix-comparison" id="toc-confusion-matrix-comparison" class="nav-link" data-scroll-target="#confusion-matrix-comparison">Confusion Matrix Comparison</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">eBay Auction Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>MISY 441-172 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 11, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="business-problem" class="level2">
+<h2 class="anchored" data-anchor-id="business-problem">Business Problem</h2>
+<p>The file <code>eBayAuctions.csv</code> contains information on 1972 auctions transacted on eBay.com during May-June 2004. The goal is to use these data to build a model that will distinguish competitive auctions from noncompetitive ones.</p>
+<p>A <strong>competitive auction</strong> is defined as an auction with at least two bids placed on the item being auctioned.</p>
+</section>
+<section id="part-a-import-packages-and-load-data" class="level2">
+<h2 class="anchored" data-anchor-id="part-a-import-packages-and-load-data">Part a: Import Packages and Load Data</h2>
+<div id="3c58176d" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn <span class="im">as</span> sk</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, confusion_matrix, classification_report</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>ebay_df <span class="op">=</span> pd.read_csv(<span class="st">'eBayAuctions.csv'</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Dataset loaded: </span><span class="sc">{</span>ebay_df<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> rows, </span><span class="sc">{</span>ebay_df<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columns"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">First 5 rows of the dataset:"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>ebay_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dataset loaded: 1972 rows, 8 columns
+
+First 5 rows of the dataset:</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="54">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Category</th>
+<th data-quarto-table-cell-role="th">currency</th>
+<th data-quarto-table-cell-role="th">sellerRating</th>
+<th data-quarto-table-cell-role="th">Duration</th>
+<th data-quarto-table-cell-role="th">endDay</th>
+<th data-quarto-table-cell-role="th">ClosePrice</th>
+<th data-quarto-table-cell-role="th">OpenPrice</th>
+<th data-quarto-table-cell-role="th">Competitive</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Music/Movie/Game</td>
+<td>US</td>
+<td>3249</td>
+<td>5</td>
+<td>Mon</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Music/Movie/Game</td>
+<td>US</td>
+<td>3249</td>
+<td>5</td>
+<td>Mon</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Music/Movie/Game</td>
+<td>US</td>
+<td>3249</td>
+<td>5</td>
+<td>Mon</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Music/Movie/Game</td>
+<td>US</td>
+<td>3249</td>
+<td>5</td>
+<td>Mon</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Music/Movie/Game</td>
+<td>US</td>
+<td>3249</td>
+<td>5</td>
+<td>Mon</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="part-b-observe-variables-in-the-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="part-b-observe-variables-in-the-dataset">Part b: Observe Variables in the Dataset</h2>
+<div id="37b90a56" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Data Types ---"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_df.dtypes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Data Types ---
+Category         object
+currency         object
+sellerRating      int64
+Duration          int64
+endDay           object
+ClosePrice      float64
+OpenPrice       float64
+Competitive       int64
+dtype: object</code></pre>
+</div>
+</div>
+<div id="b7273996" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Summary Statistics ---"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ebay_df.describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Summary Statistics ---</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="56">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">sellerRating</th>
+<th data-quarto-table-cell-role="th">Duration</th>
+<th data-quarto-table-cell-role="th">ClosePrice</th>
+<th data-quarto-table-cell-role="th">OpenPrice</th>
+<th data-quarto-table-cell-role="th">Competitive</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">count</th>
+<td>1972.000000</td>
+<td>1972.000000</td>
+<td>1972.000000</td>
+<td>1972.000000</td>
+<td>1972.000000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">mean</th>
+<td>3560.238337</td>
+<td>6.486308</td>
+<td>36.449087</td>
+<td>12.926268</td>
+<td>0.540568</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">std</th>
+<td>5973.011033</td>
+<td>2.052906</td>
+<td>89.493858</td>
+<td>38.856149</td>
+<td>0.498478</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">min</th>
+<td>0.000000</td>
+<td>1.000000</td>
+<td>0.010000</td>
+<td>0.010000</td>
+<td>0.000000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">25%</th>
+<td>595.000000</td>
+<td>5.000000</td>
+<td>4.907500</td>
+<td>1.230000</td>
+<td>0.000000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">50%</th>
+<td>1853.000000</td>
+<td>7.000000</td>
+<td>9.995000</td>
+<td>4.500000</td>
+<td>1.000000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">75%</th>
+<td>3380.000000</td>
+<td>7.000000</td>
+<td>28.000000</td>
+<td>9.990000</td>
+<td>1.000000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">max</th>
+<td>37727.000000</td>
+<td>10.000000</td>
+<td>999.000000</td>
+<td>999.000000</td>
+<td>1.000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="3e1333ab" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Info about the dataset ---"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ebay_df.info()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Info about the dataset ---
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 1972 entries, 0 to 1971
+Data columns (total 8 columns):
+ #   Column        Non-Null Count  Dtype  
+---  ------        --------------  -----  
+ 0   Category      1972 non-null   object 
+ 1   currency      1972 non-null   object 
+ 2   sellerRating  1972 non-null   int64  
+ 3   Duration      1972 non-null   int64  
+ 4   endDay        1972 non-null   object 
+ 5   ClosePrice    1972 non-null   float64
+ 6   OpenPrice     1972 non-null   float64
+ 7   Competitive   1972 non-null   int64  
+dtypes: float64(2), int64(3), object(3)
+memory usage: 123.4+ KB</code></pre>
+</div>
+</div>
+</section>
+<section id="part-c-explore-categorical-variables-vs-competitive-auctions" class="level2">
+<h2 class="anchored" data-anchor-id="part-c-explore-categorical-variables-vs-competitive-auctions">Part c: Explore Categorical Variables vs Competitive Auctions</h2>
+<section id="category-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="category-analysis">Category Analysis</h3>
+<div id="68da522a" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Category ---"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>category_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'Category'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>category_competitive <span class="op">=</span> category_competitive.sort_values(<span class="st">'mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(category_competitive)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Category with MOST competitive auctions: </span><span class="sc">{</span>category_competitive[<span class="st">'mean'</span>]<span class="sc">.</span>idxmax()<span class="sc">}</span><span class="ss"> "</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"(</span><span class="sc">{</span>category_competitive[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2%}</span><span class="ss"> competitive rate)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Competitive Auctions by Category ---
+                          mean  count
+Category                             
+Photography           0.846154     13
+Electronics           0.800000     55
+SportingGoods         0.725806    124
+Business/Industrial   0.666667     18
+Computer              0.666667     36
+Home/Garden           0.656863    102
+Music/Movie/Game      0.602978    403
+Collectibles          0.577406    239
+Antique/Art/Craft     0.564972    177
+Toys/Hobbies          0.529915    234
+Clothing/Accessories  0.504202    119
+Books                 0.500000     54
+Jewelry               0.365854     82
+Automotive            0.353933    178
+Pottery/Glass         0.350000     20
+Coins/Stamps          0.297297     37
+EverythingElse        0.235294     17
+Health/Beauty         0.171875     64
+
+Category with MOST competitive auctions: Photography (84.62% competitive rate)</code></pre>
+</div>
+</div>
+</section>
+<section id="currency-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="currency-analysis">Currency Analysis</h3>
+<div id="d765a982" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Currency ---"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>currency_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'currency'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>currency_competitive</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Competitive Auctions by Currency ---</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="59">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">count</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">currency</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">EUR</th>
+<td>0.551595</td>
+<td>533</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">GBP</th>
+<td>0.687075</td>
+<td>147</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">US</th>
+<td>0.519350</td>
+<td>1292</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="end-day-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="end-day-analysis">End Day Analysis</h3>
+<div id="ff57b31b" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by End Day ---"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>endday_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'endDay'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>endday_competitive <span class="op">=</span> endday_competitive.sort_values(<span class="st">'mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(endday_competitive)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Day with MOST competitive auctions: </span><span class="sc">{</span>endday_competitive[<span class="st">'mean'</span>]<span class="sc">.</span>idxmax()<span class="sc">}</span><span class="ss"> "</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"(</span><span class="sc">{</span>endday_competitive[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2%}</span><span class="ss"> competitive rate)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Competitive Auctions by End Day ---
+            mean  count
+endDay                 
+Mon     0.673358    548
+Thu     0.603960    202
+Tue     0.532164    171
+Sun     0.485207    338
+Wed     0.480000     75
+Fri     0.466899    287
+Sat     0.427350    351
+
+Day with MOST competitive auctions: Mon (67.34% competitive rate)</code></pre>
+</div>
+</div>
+</section>
+<section id="duration-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="duration-analysis">Duration Analysis</h3>
+<div id="e3b2e6f4" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Duration ---"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>duration_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'Duration'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>duration_competitive</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Competitive Auctions by Duration ---</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="61">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">count</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Duration</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">1</th>
+<td>0.521739</td>
+<td>23</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>0.450704</td>
+<td>213</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">5</th>
+<td>0.686695</td>
+<td>466</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>0.489142</td>
+<td>967</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">10</th>
+<td>0.544554</td>
+<td>303</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="part-d-class-balance-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="part-d-class-balance-analysis">Part d: Class Balance Analysis</h2>
+<p>What percentage of auctions are competitive? Is there an imbalance problem?</p>
+<div id="c975ebc5" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>competitive_counts <span class="op">=</span> ebay_df.groupby(<span class="st">'Competitive'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'count'</span>])</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Count of Competitive vs Non-Competitive Auctions ---"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(competitive_counts)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> competitive_counts[<span class="st">'count'</span>].<span class="bu">sum</span>()</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>competitive_pct <span class="op">=</span> competitive_counts.loc[<span class="dv">1</span>, <span class="st">'count'</span>] <span class="op">/</span> total <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>non_competitive_pct <span class="op">=</span> competitive_counts.loc[<span class="dv">0</span>, <span class="st">'count'</span>] <span class="op">/</span> total <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Competitive auctions: </span><span class="sc">{</span>competitive_pct<span class="sc">:.2f}</span><span class="ss">%"</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Non-competitive auctions: </span><span class="sc">{</span>non_competitive_pct<span class="sc">:.2f}</span><span class="ss">%"</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">abs</span>(competitive_pct <span class="op">-</span> <span class="dv">50</span>) <span class="op">&gt;</span> <span class="dv">10</span>:</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">⚠️  There appears to be a CLASS IMBALANCE issue."</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   The classes are not evenly distributed (</span><span class="sc">{</span>competitive_pct<span class="sc">:.1f}</span><span class="ss">% vs </span><span class="sc">{</span>non_competitive_pct<span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✓ The classes are relatively balanced."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Count of Competitive vs Non-Competitive Auctions ---
+             count
+Competitive       
+0              906
+1             1066
+
+Competitive auctions: 54.06%
+Non-competitive auctions: 45.94%
+
+✓ The classes are relatively balanced.</code></pre>
+</div>
+</div>
+</section>
+<section id="part-e-converting-variables-to-category-type" class="level2">
+<h2 class="anchored" data-anchor-id="part-e-converting-variables-to-category-type">Part e: Converting Variables to Category Type</h2>
+<div id="7bdb73f7" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a copy for modeling</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> ebay_df.copy()</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to category type</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'currency'</span>] <span class="op">=</span> ebay_model[<span class="st">'currency'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'endDay'</span>] <span class="op">=</span> ebay_model[<span class="st">'endDay'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'Category'</span>] <span class="op">=</span> ebay_model[<span class="st">'Category'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'Competitive'</span>] <span class="op">=</span> ebay_model[<span class="st">'Competitive'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Variable types after conversion:"</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_model.dtypes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Variable types after conversion:
+Category        category
+currency        category
+sellerRating       int64
+Duration           int64
+endDay          category
+ClosePrice       float64
+OpenPrice        float64
+Competitive     category
+dtype: object</code></pre>
+</div>
+</div>
+</section>
+<section id="part-f-creating-dummy-variables" class="level2">
+<h2 class="anchored" data-anchor-id="part-f-creating-dummy-variables">Part f: Creating Dummy Variables</h2>
+<div id="184f7258" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dummy variables (dtype=int for statsmodels compatibility)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> pd.get_dummies(ebay_model, prefix_sep<span class="op">=</span><span class="st">'_'</span>, drop_first<span class="op">=</span><span class="va">False</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shape after creating dummies: </span><span class="sc">{</span>ebay_model<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Columns after creating dummies:"</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_model.columns.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Shape after creating dummies: (1972, 34)
+
+Columns after creating dummies:
+['sellerRating', 'Duration', 'ClosePrice', 'OpenPrice', 'Category_Antique/Art/Craft', 'Category_Automotive', 'Category_Books', 'Category_Business/Industrial', 'Category_Clothing/Accessories', 'Category_Coins/Stamps', 'Category_Collectibles', 'Category_Computer', 'Category_Electronics', 'Category_EverythingElse', 'Category_Health/Beauty', 'Category_Home/Garden', 'Category_Jewelry', 'Category_Music/Movie/Game', 'Category_Photography', 'Category_Pottery/Glass', 'Category_SportingGoods', 'Category_Toys/Hobbies', 'currency_EUR', 'currency_GBP', 'currency_US', 'endDay_Fri', 'endDay_Mon', 'endDay_Sat', 'endDay_Sun', 'endDay_Thu', 'endDay_Tue', 'endDay_Wed', 'Competitive_0', 'Competitive_1']</code></pre>
+</div>
+</div>
+<div id="370358cd" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop reference categories (first category for each variable)</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Category_Automotive, currency_EUR, endDay_Mon</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>columns_to_drop <span class="op">=</span> [<span class="st">'Category_Automotive'</span>, <span class="st">'currency_EUR'</span>, <span class="st">'endDay_Mon'</span>, </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'Competitive_0'</span>]  <span class="co"># Also drop one of the Competitive dummies</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check which columns exist before dropping</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>existing_cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> columns_to_drop <span class="cf">if</span> col <span class="kw">in</span> ebay_model.columns]</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>ebay_model.drop(columns<span class="op">=</span>existing_cols, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename Competitive_1 to Competitive</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'Competitive_1'</span> <span class="kw">in</span> ebay_model.columns:</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    ebay_model.rename(columns<span class="op">=</span>{<span class="st">'Competitive_1'</span>: <span class="st">'Competitive'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shape after dropping reference categories: </span><span class="sc">{</span>ebay_model<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final columns for modeling:"</span>)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_model.columns.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Shape after dropping reference categories: (1972, 30)
+
+Final columns for modeling:
+['sellerRating', 'Duration', 'ClosePrice', 'OpenPrice', 'Category_Antique/Art/Craft', 'Category_Books', 'Category_Business/Industrial', 'Category_Clothing/Accessories', 'Category_Coins/Stamps', 'Category_Collectibles', 'Category_Computer', 'Category_Electronics', 'Category_EverythingElse', 'Category_Health/Beauty', 'Category_Home/Garden', 'Category_Jewelry', 'Category_Music/Movie/Game', 'Category_Photography', 'Category_Pottery/Glass', 'Category_SportingGoods', 'Category_Toys/Hobbies', 'currency_GBP', 'currency_US', 'endDay_Fri', 'endDay_Sat', 'endDay_Sun', 'endDay_Thu', 'endDay_Tue', 'endDay_Wed', 'Competitive']</code></pre>
+</div>
+</div>
+</section>
+<section id="part-g-data-partitioning-60-train-40-test" class="level2">
+<h2 class="anchored" data-anchor-id="part-g-data-partitioning-60-train-40-test">Part g: Data Partitioning (60% Train / 40% Test)</h2>
+<div id="3239ff2e" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define X (features) and y (target)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert y to int to ensure compatibility with statsmodels</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> ebay_model[<span class="st">'Competitive'</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> ebay_model.drop(columns<span class="op">=</span>[<span class="st">'Competitive'</span>])</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data with random_state=202</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.40</span>, random_state<span class="op">=</span><span class="dv">202</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training set size: </span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="op">/</span><span class="bu">len</span>(X)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test set size: </span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="op">/</span><span class="bu">len</span>(X)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training set size: 1183 (60.0%)
+Test set size: 789 (40.0%)</code></pre>
+</div>
+</div>
+</section>
+<section id="modeling-part-1-logistic-regression-with-all-variables" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-part-1-logistic-regression-with-all-variables">Modeling Part 1: Logistic Regression with ALL Variables</h2>
+<div id="cee3d006" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using statsmodels for detailed output</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>X_train_const <span class="op">=</span> sm.add_constant(X_train)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>X_test_const <span class="op">=</span> sm.add_constant(X_test)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit logistic regression</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>logit_model <span class="op">=</span> sm.Logit(y_train, X_train_const)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> logit_model.fit(disp<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Logistic Regression Summary (with all variables including ClosePrice) ---"</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Logistic Regression Summary (with all variables including ClosePrice) ---
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:            Competitive   No. Observations:                 1183
+Model:                          Logit   Df Residuals:                     1153
+Method:                           MLE   Df Model:                           29
+Date:                Sun, 11 Jan 2026   Pseudo R-squ.:                  0.2542
+Time:                        10:59:23   Log-Likelihood:                -608.57
+converged:                       True   LL-Null:                       -816.01
+Covariance Type:            nonrobust   LLR p-value:                 7.125e-70
+=================================================================================================
+                                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+-------------------------------------------------------------------------------------------------
+const                            -0.1560      0.495     -0.315      0.753      -1.126       0.814
+sellerRating                  -3.909e-05   1.54e-05     -2.533      0.011   -6.93e-05   -8.84e-06
+Duration                         -0.0033      0.044     -0.074      0.941      -0.089       0.083
+ClosePrice                        0.0850      0.010      8.935      0.000       0.066       0.104
+OpenPrice                        -0.0993      0.011     -9.201      0.000      -0.120      -0.078
+Category_Antique/Art/Craft        0.3478      0.386      0.901      0.368      -0.409       1.105
+Category_Books                   -0.1032      0.501     -0.206      0.837      -1.085       0.878
+Category_Business/Industrial      0.9030      0.808      1.117      0.264      -0.681       2.487
+Category_Clothing/Accessories    -0.5870      0.444     -1.321      0.187      -1.458       0.284
+Category_Coins/Stamps            -0.9858      0.724     -1.362      0.173      -2.404       0.433
+Category_Collectibles             0.3893      0.363      1.072      0.284      -0.323       1.101
+Category_Computer                 0.2386      0.623      0.383      0.702      -0.982       1.459
+Category_Electronics              1.1001      0.548      2.007      0.045       0.026       2.174
+Category_EverythingElse          -2.0036      1.150     -1.742      0.082      -4.258       0.251
+Category_Health/Beauty           -1.5437      0.602     -2.566      0.010      -2.723      -0.365
+Category_Home/Garden              0.3233      0.424      0.762      0.446      -0.509       1.155
+Category_Jewelry                 -0.1251      0.446     -0.281      0.779      -0.999       0.749
+Category_Music/Movie/Game         0.7302      0.342      2.135      0.033       0.060       1.401
+Category_Photography              0.4500      1.084      0.415      0.678      -1.674       2.574
+Category_Pottery/Glass           -0.2181      0.954     -0.228      0.819      -2.089       1.653
+Category_SportingGoods            0.4319      0.448      0.964      0.335      -0.447       1.310
+Category_Toys/Hobbies             0.7028      0.350      2.008      0.045       0.017       1.389
+currency_GBP                      1.1184      0.544      2.054      0.040       0.051       2.185
+currency_US                       0.3289      0.229      1.437      0.151      -0.120       0.777
+endDay_Fri                       -0.5712      0.240     -2.382      0.017      -1.041      -0.101
+endDay_Sat                       -1.0892      0.230     -4.739      0.000      -1.540      -0.639
+endDay_Sun                       -0.8384      0.226     -3.708      0.000      -1.282      -0.395
+endDay_Thu                       -0.6933      0.510     -1.360      0.174      -1.692       0.306
+endDay_Tue                       -0.7397      0.287     -2.582      0.010      -1.301      -0.178
+endDay_Wed                       -0.8763      0.410     -2.137      0.033      -1.680      -0.072
+=================================================================================================</code></pre>
+</div>
+</div>
+<div id="122cc46c" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using sklearn for predictions</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>lr_model <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">202</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>lr_model.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="68">
+<style>#sk-container-id-2 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: #000;
+  --sklearn-color-text-muted: #666;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-2 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-2 pre {
+  padding: 0;
+}
+
+#sk-container-id-2 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-2 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-2 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-2 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-2 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-2 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-2 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-2 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-2 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-2 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-2 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-2 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-2 label.sk-toggleable__label {
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+#sk-container-id-2 label.sk-toggleable__label .caption {
+  font-size: 0.6rem;
+  font-weight: lighter;
+  color: var(--sklearn-color-text-muted);
+}
+
+#sk-container-id-2 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-2 div.sk-toggleable__content {
+  display: none;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-2 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-2 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-2 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-2 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-2 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-2 div.sk-label label.sk-toggleable__label,
+#sk-container-id-2 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-2 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-2 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-2 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-2 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-2 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-2 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-2 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 0.5em;
+  text-align: center;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-2 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-2 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-2 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-2 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+
+.estimator-table summary {
+    padding: .5rem;
+    font-family: monospace;
+    cursor: pointer;
+}
+
+.estimator-table details[open] {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    padding-bottom: 0.3rem;
+}
+
+.estimator-table .parameters-table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.estimator-table .parameters-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.estimator-table .parameters-table tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+
+.estimator-table .parameters-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+.estimator-table table td {
+    border: 1px solid rgba(106, 105, 104, 0.232);
+}
+
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left;
+}
+
+.user-set td.value pre {
+    color:rgb(255, 94, 0) !important;
+    background-color: transparent !important;
+}
+
+.default td {
+    color: black;
+    text-align: left;
+}
+
+.user-set td i,
+.default td i {
+    color: black;
+}
+
+.copy-paste-icon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    background-position: 0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+</style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression(max_iter=1000, random_state=202)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked=""><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LogisticRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+        <div class="estimator-table">
+            <details>
+                <summary>Parameters</summary>
+                
+<table class="parameters-table caption-top table table-sm table-striped small">
+<tbody>
+<tr class="default odd">
+<td><em></em></td>
+<td class="param">penalty&nbsp;</td>
+<td class="value">'l2'</td>
+</tr>
+<tr class="default even">
+<td><em></em></td>
+<td class="param">dual&nbsp;</td>
+<td class="value">False</td>
+</tr>
+<tr class="default odd">
+<td><em></em></td>
+<td class="param">tol&nbsp;</td>
+<td class="value">0.0001</td>
+</tr>
+<tr class="default even">
+<td><em></em></td>
+<td class="param">C&nbsp;</td>
+<td class="value">1.0</td>
+</tr>
+<tr class="default odd">
+<td><em></em></td>
+<td class="param">fit_intercept&nbsp;</td>
+<td class="value">True</td>
+</tr>
+<tr class="default even">
+<td><em></em></td>
+<td class="param">intercept_scaling&nbsp;</td>
+<td class="value">1</td>
+</tr>
+<tr class="default odd">
+<td><em></em></td>
+<td class="param">class_weight&nbsp;</td>
+<td class="value">None</td>
+</tr>
+<tr class="user-set even">
+<td><em></em></td>
+<td class="param">random_state&nbsp;</td>
+<td class="value">202</td>
+</tr>
+<tr class="default odd">
+<td><em></em></td>
+<td class="param">solver&nbsp;</td>
+<td class="value">'lbfgs'</td>
+</tr>
+<tr class="user-set even">
+<td><em></em></td>
+<td class="param">max_iter&nbsp;</td>
+<td class="value">1000</td>
+</tr>
+<tr class="default odd">
+<td><em></em></td>
+<td class="param">multi_class&nbsp;</td>
+<td class="value">'deprecated'</td>
+</tr>
+<tr class="default even">
+<td><em></em></td>
+<td class="param">verbose&nbsp;</td>
+<td class="value">0</td>
+</tr>
+<tr class="default odd">
+<td><em></em></td>
+<td class="param">warm_start&nbsp;</td>
+<td class="value">False</td>
+</tr>
+<tr class="default even">
+<td><em></em></td>
+<td class="param">n_jobs&nbsp;</td>
+<td class="value">None</td>
+</tr>
+<tr class="default odd">
+<td><em></em></td>
+<td class="param">l1_ratio&nbsp;</td>
+<td class="value">None</td>
+</tr>
+</tbody>
+</table>
+
+            </details>
+        </div>
+    </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    // Get the parameter prefix from the closest toggleable content
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+    const originalStyle = element.style;
+    const computedStyle = window.getComputedStyle(element);
+    const originalWidth = computedStyle.width;
+    const originalHTML = element.innerHTML.replace('Copied!', '');
+
+    navigator.clipboard.writeText(fullParamName)
+        .then(() => {
+            element.style.width = originalWidth;
+            element.style.color = 'green';
+            element.innerHTML = "Copied!";
+
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy:', err);
+            element.style.color = 'red';
+            element.innerHTML = "Failed!";
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        });
+    return false;
+}
+
+document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const paramName = element.parentElement.nextElementSibling.textContent.trim();
+    const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+    element.setAttribute('title', fullParamName);
+});
+</script>
+</div>
+</div>
+</section>
+<section id="modeling-part-2-confusion-matrix-and-accuracy" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-part-2-confusion-matrix-and-accuracy">Modeling Part 2: Confusion Matrix and Accuracy</h2>
+<div id="968c47a5" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions on test set</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> lr_model.predict(X_test)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Confusion Matrix (Validation Data) ---"</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 Predicted"</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 0       1"</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Actual 0      </span><span class="sc">{</span>cm[<span class="dv">0</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm[<span class="dv">0</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"       1      </span><span class="sc">{</span>cm[<span class="dv">1</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Confusion Matrix (Validation Data) ---
+                 Predicted
+                 0       1
+Actual 0       293      70
+       1       107     319
+
+Accuracy: 0.7757 (77.57%)</code></pre>
+</div>
+</div>
+<div id="48e47cfa" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix Plot</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>            yticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>            annot_kws<span class="op">=</span>{<span class="st">'size'</span>: <span class="dv">14</span>})</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Actual'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix (With ClosePrice)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="eBay_analysis_files/figure-html/cell-18-output-1.png" width="713" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="fc1598b6" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Classification Report ---"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Classification Report ---
+              precision    recall  f1-score   support
+
+           0       0.73      0.81      0.77       363
+           1       0.82      0.75      0.78       426
+
+    accuracy                           0.78       789
+   macro avg       0.78      0.78      0.78       789
+weighted avg       0.78      0.78      0.78       789
+</code></pre>
+</div>
+</div>
+</section>
+<section id="modeling-part-3-challenge-of-using-closeprice" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-part-3-challenge-of-using-closeprice">Modeling Part 3: Challenge of Using ClosePrice</h2>
+<p><strong>ANSWER:</strong> The challenge of using ClosePrice to predict if an auction will be competitive is that ClosePrice is <strong>NOT AVAILABLE</strong> at the time of prediction.</p>
+<section id="key-issues" class="level3">
+<h3 class="anchored" data-anchor-id="key-issues">Key Issues:</h3>
+<ol type="1">
+<li><p><strong>DATA LEAKAGE:</strong> ClosePrice is determined AFTER the auction ends, which means it is influenced by whether the auction was competitive or not. Using it as a predictor creates data leakage - we’re using information that wouldn’t be available when making predictions on new auctions.</p></li>
+<li><p><strong>CAUSALITY:</strong> Higher close prices often result FROM competitive bidding. This reverses the causal relationship - the outcome (competitive auction) causes the predictor (higher close price), not the other way around.</p></li>
+<li><p><strong>PRACTICAL UTILITY:</strong> In a real-world scenario, we want to predict whether an auction WILL BE competitive before it happens. ClosePrice is only known after the auction concludes, making it useless for prospective predictions.</p></li>
+</ol>
+<p>This is why we need to build a model WITHOUT ClosePrice for practical use.</p>
+</section>
+</section>
+<section id="modeling-part-4-model-without-closeprice" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-part-4-model-without-closeprice">Modeling Part 4: Model WITHOUT ClosePrice</h2>
+<div id="ca1798f0" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove ClosePrice from features</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>X_no_close <span class="op">=</span> X.drop(columns<span class="op">=</span>[<span class="st">'ClosePrice'</span>])</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Split again with same random state</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>X_train_nc, X_test_nc, y_train_nc, y_test_nc <span class="op">=</span> train_test_split(</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    X_no_close, y, test_size<span class="op">=</span><span class="fl">0.40</span>, random_state<span class="op">=</span><span class="dv">202</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit new model without ClosePrice</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>lr_model_nc <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">202</span>)</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>lr_model_nc.fit(X_train_nc, y_train_nc)</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>y_pred_nc <span class="op">=</span> lr_model_nc.predict(X_test_nc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="e48fafa9" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>cm_nc <span class="op">=</span> confusion_matrix(y_test_nc, y_pred_nc)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Confusion Matrix WITHOUT ClosePrice ---"</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 Predicted"</span>)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 0       1"</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Actual 0      </span><span class="sc">{</span>cm_nc[<span class="dv">0</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm_nc[<span class="dv">0</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"       1      </span><span class="sc">{</span>cm_nc[<span class="dv">1</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm_nc[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="co"># New Accuracy</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>accuracy_nc <span class="op">=</span> accuracy_score(y_test_nc, y_pred_nc)</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Accuracy WITHOUT ClosePrice: </span><span class="sc">{</span>accuracy_nc<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy_nc<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Confusion Matrix WITHOUT ClosePrice ---
+                 Predicted
+                 0       1
+Actual 0       209     154
+       1       130     296
+
+Accuracy WITHOUT ClosePrice: 0.6401 (64.01%)</code></pre>
+</div>
+</div>
+<div id="dc54a92b" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix Plot (Without ClosePrice)</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm_nc, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Oranges'</span>, </span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>            yticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>            annot_kws<span class="op">=</span>{<span class="st">'size'</span>: <span class="dv">14</span>})</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Actual'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix (Without ClosePrice)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="eBay_analysis_files/figure-html/cell-22-output-1.png" width="713" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="947d3002" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change in accuracy</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>accuracy_change <span class="op">=</span> accuracy_nc <span class="op">-</span> accuracy</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"--- Comparison ---"</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy WITH ClosePrice:    </span><span class="sc">{</span>accuracy<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy WITHOUT ClosePrice: </span><span class="sc">{</span>accuracy_nc<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy_nc<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Change in Accuracy:          </span><span class="sc">{</span>accuracy_change<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> accuracy_change <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">⚠️  Accuracy DECREASED by </span><span class="sc">{</span><span class="bu">abs</span>(accuracy_change)<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">% after removing ClosePrice."</span>)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   This confirms that ClosePrice was contributing significantly to the model,"</span>)</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   but for practical predictions, the model without ClosePrice is more appropriate."</span>)</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✓ Accuracy changed by </span><span class="sc">{</span>accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">% after removing ClosePrice."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Comparison ---
+Accuracy WITH ClosePrice:    0.7757 (77.57%)
+Accuracy WITHOUT ClosePrice: 0.6401 (64.01%)
+Change in Accuracy:          -0.1356 (-13.56%)
+
+⚠️  Accuracy DECREASED by 13.56% after removing ClosePrice.
+   This confirms that ClosePrice was contributing significantly to the model,
+   but for practical predictions, the model without ClosePrice is more appropriate.</code></pre>
+</div>
+</div>
+<div id="58b3ef76" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report for model without ClosePrice</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Classification Report (Without ClosePrice) ---"</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test_nc, y_pred_nc))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Classification Report (Without ClosePrice) ---
+              precision    recall  f1-score   support
+
+           0       0.62      0.58      0.60       363
+           1       0.66      0.69      0.68       426
+
+    accuracy                           0.64       789
+   macro avg       0.64      0.64      0.64       789
+weighted avg       0.64      0.64      0.64       789
+</code></pre>
+</div>
+</div>
+<div id="4f6685ef" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Statsmodels summary for the model without ClosePrice</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Logistic Regression Summary (Without ClosePrice) ---"</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>X_train_nc_const <span class="op">=</span> sm.add_constant(X_train_nc)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>logit_model_nc <span class="op">=</span> sm.Logit(y_train_nc, X_train_nc_const)</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>result_nc <span class="op">=</span> logit_model_nc.fit(disp<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result_nc.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Logistic Regression Summary (Without ClosePrice) ---
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:            Competitive   No. Observations:                 1183
+Model:                          Logit   Df Residuals:                     1154
+Method:                           MLE   Df Model:                           28
+Date:                Sun, 11 Jan 2026   Pseudo R-squ.:                  0.1073
+Time:                        10:59:25   Log-Likelihood:                -728.47
+converged:                       True   LL-Null:                       -816.01
+Covariance Type:            nonrobust   LLR p-value:                 3.195e-23
+=================================================================================================
+                                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+-------------------------------------------------------------------------------------------------
+const                             1.2485      0.407      3.071      0.002       0.452       2.045
+sellerRating                  -4.119e-05   1.31e-05     -3.135      0.002   -6.69e-05   -1.54e-05
+Duration                         -0.0784      0.037     -2.094      0.036      -0.152      -0.005
+OpenPrice                        -0.0074      0.003     -2.399      0.016      -0.013      -0.001
+Category_Antique/Art/Craft        0.2577      0.331      0.779      0.436      -0.391       0.906
+Category_Books                   -0.2040      0.435     -0.469      0.639      -1.057       0.649
+Category_Business/Industrial      1.3446      0.726      1.853      0.064      -0.078       2.767
+Category_Clothing/Accessories     0.2920      0.345      0.845      0.398      -0.385       0.969
+Category_Coins/Stamps            -0.8566      0.578     -1.482      0.138      -1.989       0.276
+Category_Collectibles             0.5350      0.300      1.782      0.075      -0.054       1.124
+Category_Computer                 0.7968      0.512      1.557      0.119      -0.206       1.800
+Category_Electronics              1.5245      0.456      3.345      0.001       0.631       2.418
+Category_EverythingElse          -2.1275      1.105     -1.925      0.054      -4.293       0.038
+Category_Health/Beauty           -1.7720      0.547     -3.238      0.001      -2.845      -0.699
+Category_Home/Garden              0.6094      0.362      1.686      0.092      -0.099       1.318
+Category_Jewelry                 -0.3227      0.394     -0.818      0.413      -1.096       0.450
+Category_Music/Movie/Game         0.4912      0.286      1.718      0.086      -0.069       1.052
+Category_Photography              1.2854      0.867      1.482      0.138      -0.414       2.985
+Category_Pottery/Glass           -0.3396      0.781     -0.435      0.664      -1.871       1.192
+Category_SportingGoods            1.3494      0.372      3.631      0.000       0.621       2.078
+Category_Toys/Hobbies             0.6431      0.294      2.188      0.029       0.067       1.219
+currency_GBP                      0.9335      0.463      2.015      0.044       0.025       1.841
+currency_US                      -0.0712      0.202     -0.353      0.724      -0.467       0.325
+endDay_Fri                       -0.9616      0.221     -4.358      0.000      -1.394      -0.529
+endDay_Sat                       -1.2791      0.210     -6.089      0.000      -1.691      -0.867
+endDay_Sun                       -0.9998      0.207     -4.840      0.000      -1.405      -0.595
+endDay_Thu                       -1.0032      0.422     -2.379      0.017      -1.830      -0.177
+endDay_Tue                       -0.7470      0.258     -2.895      0.004      -1.253      -0.241
+endDay_Wed                       -0.9726      0.362     -2.689      0.007      -1.682      -0.264
+=================================================================================================</code></pre>
+</div>
+</div>
+</section>
+<section id="confusion-matrix-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="confusion-matrix-comparison">Confusion Matrix Comparison</h2>
+<div id="dc89c3d0" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Side-by-side comparison of confusion matrices</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">5</span>))</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># With ClosePrice</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>],</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>[<span class="st">'Non-Comp (0)'</span>, <span class="st">'Comp (1)'</span>],</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>            yticklabels<span class="op">=</span>[<span class="st">'Non-Comp (0)'</span>, <span class="st">'Comp (1)'</span>],</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>            annot_kws<span class="op">=</span>{<span class="st">'size'</span>: <span class="dv">16</span>})</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Predicted'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Actual'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="ss">f'With ClosePrice</span><span class="ch">\n</span><span class="ss">Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">:.2%}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Without ClosePrice</span></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm_nc, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Oranges'</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>],</span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>[<span class="st">'Non-Comp (0)'</span>, <span class="st">'Comp (1)'</span>],</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>            yticklabels<span class="op">=</span>[<span class="st">'Non-Comp (0)'</span>, <span class="st">'Comp (1)'</span>],</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>            annot_kws<span class="op">=</span>{<span class="st">'size'</span>: <span class="dv">16</span>})</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Predicted'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Actual'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f'Without ClosePrice</span><span class="ch">\n</span><span class="ss">Accuracy: </span><span class="sc">{</span>accuracy_nc<span class="sc">:.2%}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Confusion Matrix Comparison'</span>, fontsize<span class="op">=</span><span class="dv">15</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, y<span class="op">=</span><span class="fl">1.02</span>)</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="eBay_analysis_files/figure-html/cell-26-output-1.png" width="1294" height="495" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>This analysis built logistic regression models to predict competitive eBay auctions. The key finding is that while including ClosePrice improves accuracy, it creates a data leakage problem since ClosePrice is only known after an auction ends. The practical model (without ClosePrice) should be used for real-world predictions.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

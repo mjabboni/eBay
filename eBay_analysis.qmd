@@ -1,0 +1,372 @@
+---
+title: "eBay Auction Analysis"
+author: "MISY 441-172"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+jupyter: python3
+---
+
+## Business Problem
+
+The file `eBayAuctions.csv` contains information on 1972 auctions transacted on eBay.com during May-June 2004. The goal is to use these data to build a model that will distinguish competitive auctions from noncompetitive ones.
+
+A **competitive auction** is defined as an auction with at least two bids placed on the item being auctioned.
+
+## Part a: Import Packages and Load Data
+
+```{python}
+import numpy as np
+import pandas as pd
+import sklearn as sk
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+warnings.filterwarnings('ignore')
+
+# Load the dataset
+ebay_df = pd.read_csv('eBayAuctions.csv')
+
+print(f"Dataset loaded: {ebay_df.shape[0]} rows, {ebay_df.shape[1]} columns")
+print("\nFirst 5 rows of the dataset:")
+ebay_df.head()
+```
+
+## Part b: Observe Variables in the Dataset
+
+```{python}
+print("--- Data Types ---")
+print(ebay_df.dtypes)
+```
+
+```{python}
+print("--- Summary Statistics ---")
+ebay_df.describe()
+```
+
+```{python}
+print("--- Info about the dataset ---")
+ebay_df.info()
+```
+
+## Part c: Explore Categorical Variables vs Competitive Auctions
+
+### Category Analysis
+
+```{python}
+print("--- Competitive Auctions by Category ---")
+category_competitive = ebay_df.groupby('Category')['Competitive'].agg(['mean', 'count'])
+category_competitive = category_competitive.sort_values('mean', ascending=False)
+print(category_competitive)
+print(f"\nCategory with MOST competitive auctions: {category_competitive['mean'].idxmax()} "
+      f"({category_competitive['mean'].max():.2%} competitive rate)")
+```
+
+### Currency Analysis
+
+```{python}
+print("--- Competitive Auctions by Currency ---")
+currency_competitive = ebay_df.groupby('currency')['Competitive'].agg(['mean', 'count'])
+currency_competitive
+```
+
+### End Day Analysis
+
+```{python}
+print("--- Competitive Auctions by End Day ---")
+endday_competitive = ebay_df.groupby('endDay')['Competitive'].agg(['mean', 'count'])
+endday_competitive = endday_competitive.sort_values('mean', ascending=False)
+print(endday_competitive)
+print(f"\nDay with MOST competitive auctions: {endday_competitive['mean'].idxmax()} "
+      f"({endday_competitive['mean'].max():.2%} competitive rate)")
+```
+
+### Duration Analysis
+
+```{python}
+print("--- Competitive Auctions by Duration ---")
+duration_competitive = ebay_df.groupby('Duration')['Competitive'].agg(['mean', 'count'])
+duration_competitive
+```
+
+## Part d: Class Balance Analysis
+
+What percentage of auctions are competitive? Is there an imbalance problem?
+
+```{python}
+competitive_counts = ebay_df.groupby('Competitive')['Competitive'].agg(['count'])
+print("--- Count of Competitive vs Non-Competitive Auctions ---")
+print(competitive_counts)
+
+total = competitive_counts['count'].sum()
+competitive_pct = competitive_counts.loc[1, 'count'] / total * 100
+non_competitive_pct = competitive_counts.loc[0, 'count'] / total * 100
+
+print(f"\nCompetitive auctions: {competitive_pct:.2f}%")
+print(f"Non-competitive auctions: {non_competitive_pct:.2f}%")
+
+if abs(competitive_pct - 50) > 10:
+    print(f"\n⚠️  There appears to be a CLASS IMBALANCE issue.")
+    print(f"   The classes are not evenly distributed ({competitive_pct:.1f}% vs {non_competitive_pct:.1f}%)")
+else:
+    print("\n✓ The classes are relatively balanced.")
+```
+
+## Part e: Converting Variables to Category Type
+
+```{python}
+# Create a copy for modeling
+ebay_model = ebay_df.copy()
+
+# Convert to category type
+ebay_model['currency'] = ebay_model['currency'].astype('category')
+ebay_model['endDay'] = ebay_model['endDay'].astype('category')
+ebay_model['Category'] = ebay_model['Category'].astype('category')
+ebay_model['Competitive'] = ebay_model['Competitive'].astype('category')
+
+print("Variable types after conversion:")
+print(ebay_model.dtypes)
+```
+
+## Part f: Creating Dummy Variables
+
+```{python}
+# Create dummy variables (dtype=int for statsmodels compatibility)
+ebay_model = pd.get_dummies(ebay_model, prefix_sep='_', drop_first=False, dtype=int)
+
+print(f"Shape after creating dummies: {ebay_model.shape}")
+print("\nColumns after creating dummies:")
+print(ebay_model.columns.tolist())
+```
+
+```{python}
+# Drop reference categories (first category for each variable)
+# Category_Automotive, currency_EUR, endDay_Mon
+columns_to_drop = ['Category_Automotive', 'currency_EUR', 'endDay_Mon', 
+                   'Competitive_0']  # Also drop one of the Competitive dummies
+
+# Check which columns exist before dropping
+existing_cols = [col for col in columns_to_drop if col in ebay_model.columns]
+ebay_model.drop(columns=existing_cols, inplace=True)
+
+# Rename Competitive_1 to Competitive
+if 'Competitive_1' in ebay_model.columns:
+    ebay_model.rename(columns={'Competitive_1': 'Competitive'}, inplace=True)
+
+print(f"Shape after dropping reference categories: {ebay_model.shape}")
+print("\nFinal columns for modeling:")
+print(ebay_model.columns.tolist())
+```
+
+## Part g: Data Partitioning (60% Train / 40% Test)
+
+```{python}
+# Define X (features) and y (target)
+# Convert y to int to ensure compatibility with statsmodels
+y = ebay_model['Competitive'].astype(int)
+X = ebay_model.drop(columns=['Competitive'])
+
+# Split the data with random_state=202
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.40, random_state=202
+)
+
+print(f"Training set size: {len(X_train)} ({len(X_train)/len(X)*100:.1f}%)")
+print(f"Test set size: {len(X_test)} ({len(X_test)/len(X)*100:.1f}%)")
+```
+
+## Modeling Part 1: Logistic Regression with ALL Variables
+
+```{python}
+# Using statsmodels for detailed output
+X_train_const = sm.add_constant(X_train)
+X_test_const = sm.add_constant(X_test)
+
+# Fit logistic regression
+logit_model = sm.Logit(y_train, X_train_const)
+result = logit_model.fit(disp=0)
+
+print("--- Logistic Regression Summary (with all variables including ClosePrice) ---")
+print(result.summary())
+```
+
+```{python}
+# Using sklearn for predictions
+lr_model = LogisticRegression(max_iter=1000, random_state=202)
+lr_model.fit(X_train, y_train)
+```
+
+## Modeling Part 2: Confusion Matrix and Accuracy
+
+```{python}
+# Predictions on test set
+y_pred = lr_model.predict(X_test)
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+print("--- Confusion Matrix (Validation Data) ---")
+print(f"                 Predicted")
+print(f"                 0       1")
+print(f"Actual 0      {cm[0,0]:4d}    {cm[0,1]:4d}")
+print(f"       1      {cm[1,0]:4d}    {cm[1,1]:4d}")
+
+# Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f"\nAccuracy: {accuracy:.4f} ({accuracy*100:.2f}%)")
+```
+
+```{python}
+# Confusion Matrix Plot
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=['Non-Competitive (0)', 'Competitive (1)'],
+            yticklabels=['Non-Competitive (0)', 'Competitive (1)'],
+            annot_kws={'size': 14})
+plt.xlabel('Predicted', fontsize=12)
+plt.ylabel('Actual', fontsize=12)
+plt.title('Confusion Matrix (With ClosePrice)', fontsize=14)
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+# Classification Report
+print("--- Classification Report ---")
+print(classification_report(y_test, y_pred))
+```
+
+## Modeling Part 3: Challenge of Using ClosePrice
+
+**ANSWER:** The challenge of using ClosePrice to predict if an auction will be competitive is that ClosePrice is **NOT AVAILABLE** at the time of prediction.
+
+### Key Issues:
+
+1. **DATA LEAKAGE:** ClosePrice is determined AFTER the auction ends, which means it is influenced by whether the auction was competitive or not. Using it as a predictor creates data leakage - we're using information that wouldn't be available when making predictions on new auctions.
+
+2. **CAUSALITY:** Higher close prices often result FROM competitive bidding. This reverses the causal relationship - the outcome (competitive auction) causes the predictor (higher close price), not the other way around.
+
+3. **PRACTICAL UTILITY:** In a real-world scenario, we want to predict whether an auction WILL BE competitive before it happens. ClosePrice is only known after the auction concludes, making it useless for prospective predictions.
+
+This is why we need to build a model WITHOUT ClosePrice for practical use.
+
+## Modeling Part 4: Model WITHOUT ClosePrice
+
+```{python}
+# Remove ClosePrice from features
+X_no_close = X.drop(columns=['ClosePrice'])
+
+# Split again with same random state
+X_train_nc, X_test_nc, y_train_nc, y_test_nc = train_test_split(
+    X_no_close, y, test_size=0.40, random_state=202
+)
+
+# Fit new model without ClosePrice
+lr_model_nc = LogisticRegression(max_iter=1000, random_state=202)
+lr_model_nc.fit(X_train_nc, y_train_nc)
+
+# Predictions
+y_pred_nc = lr_model_nc.predict(X_test_nc)
+```
+
+```{python}
+# Confusion Matrix
+cm_nc = confusion_matrix(y_test_nc, y_pred_nc)
+print("--- Confusion Matrix WITHOUT ClosePrice ---")
+print(f"                 Predicted")
+print(f"                 0       1")
+print(f"Actual 0      {cm_nc[0,0]:4d}    {cm_nc[0,1]:4d}")
+print(f"       1      {cm_nc[1,0]:4d}    {cm_nc[1,1]:4d}")
+
+# New Accuracy
+accuracy_nc = accuracy_score(y_test_nc, y_pred_nc)
+print(f"\nAccuracy WITHOUT ClosePrice: {accuracy_nc:.4f} ({accuracy_nc*100:.2f}%)")
+```
+
+```{python}
+# Confusion Matrix Plot (Without ClosePrice)
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm_nc, annot=True, fmt='d', cmap='Oranges', 
+            xticklabels=['Non-Competitive (0)', 'Competitive (1)'],
+            yticklabels=['Non-Competitive (0)', 'Competitive (1)'],
+            annot_kws={'size': 14})
+plt.xlabel('Predicted', fontsize=12)
+plt.ylabel('Actual', fontsize=12)
+plt.title('Confusion Matrix (Without ClosePrice)', fontsize=14)
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+# Change in accuracy
+accuracy_change = accuracy_nc - accuracy
+print(f"--- Comparison ---")
+print(f"Accuracy WITH ClosePrice:    {accuracy:.4f} ({accuracy*100:.2f}%)")
+print(f"Accuracy WITHOUT ClosePrice: {accuracy_nc:.4f} ({accuracy_nc*100:.2f}%)")
+print(f"Change in Accuracy:          {accuracy_change:.4f} ({accuracy_change*100:.2f}%)")
+
+if accuracy_change < 0:
+    print(f"\n⚠️  Accuracy DECREASED by {abs(accuracy_change)*100:.2f}% after removing ClosePrice.")
+    print("   This confirms that ClosePrice was contributing significantly to the model,")
+    print("   but for practical predictions, the model without ClosePrice is more appropriate.")
+else:
+    print(f"\n✓ Accuracy changed by {accuracy_change*100:.2f}% after removing ClosePrice.")
+```
+
+```{python}
+# Classification Report for model without ClosePrice
+print("--- Classification Report (Without ClosePrice) ---")
+print(classification_report(y_test_nc, y_pred_nc))
+```
+
+```{python}
+# Statsmodels summary for the model without ClosePrice
+print("--- Logistic Regression Summary (Without ClosePrice) ---")
+X_train_nc_const = sm.add_constant(X_train_nc)
+logit_model_nc = sm.Logit(y_train_nc, X_train_nc_const)
+result_nc = logit_model_nc.fit(disp=0)
+print(result_nc.summary())
+```
+
+## Confusion Matrix Comparison
+
+```{python}
+# Side-by-side comparison of confusion matrices
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# With ClosePrice
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=axes[0],
+            xticklabels=['Non-Comp (0)', 'Comp (1)'],
+            yticklabels=['Non-Comp (0)', 'Comp (1)'],
+            annot_kws={'size': 16})
+axes[0].set_xlabel('Predicted', fontsize=12)
+axes[0].set_ylabel('Actual', fontsize=12)
+axes[0].set_title(f'With ClosePrice\nAccuracy: {accuracy:.2%}', fontsize=13)
+
+# Without ClosePrice
+sns.heatmap(cm_nc, annot=True, fmt='d', cmap='Oranges', ax=axes[1],
+            xticklabels=['Non-Comp (0)', 'Comp (1)'],
+            yticklabels=['Non-Comp (0)', 'Comp (1)'],
+            annot_kws={'size': 16})
+axes[1].set_xlabel('Predicted', fontsize=12)
+axes[1].set_ylabel('Actual', fontsize=12)
+axes[1].set_title(f'Without ClosePrice\nAccuracy: {accuracy_nc:.2%}', fontsize=13)
+
+plt.suptitle('Confusion Matrix Comparison', fontsize=15, fontweight='bold', y=1.02)
+plt.tight_layout()
+plt.show()
+```
+
+## Conclusion
+
+This analysis built logistic regression models to predict competitive eBay auctions. The key finding is that while including ClosePrice improves accuracy, it creates a data leakage problem since ClosePrice is only known after an auction ends. The practical model (without ClosePrice) should be used for real-world predictions.

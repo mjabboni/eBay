@@ -44,10 +44,10 @@ ebay_df.groupby('Category')['Competitive'].agg(['mean'])
 d. What percentage of the auctions are competitive? Is there an imbalance problem?
 Hint Code: # count of competitive Auctions
 ebay_df.groupby('Competitive')['Competitive'].agg(['count'])
-e. Change variable types for (Currency, endDay, Category, and Cometitive) from objects to
+e. Change variable types for (Currency, endDay, Category, and Competitive) from objects to
 category for modeling
 Hint: ebay_df['currency'] = ebay_df['currency'].astype('category')
-f. Create dummy variables for these categories and rop the first reference
+f. Create dummy variables for these categories and drop the first reference
 Hint Code:
 ebay_df = pd.get_dummies(ebay_df, prefix_sep='_')
 ebay_df.drop(columns=['Category_Automotive', 'currency_EUR', 'endDay_Mon'], inplace=True)
