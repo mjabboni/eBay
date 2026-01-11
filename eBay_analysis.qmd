@@ -615,17 +615,42 @@ print()
 print("=" * 75)
 ```
 
-| Question | Answer |
-|:---------|:-------|
-| **Most competitive category?** | `{python} category_competitive['mean'].idxmax()` |
-| **Most competitive day?** | `{python} endday_competitive['mean'].idxmax()` |
-| **% of auctions competitive?** | `{python} f"{competitive_percentage:.2f}%"` |
-| **Imbalance problem?** | `{python} "Yes" if (competitive_percentage < 40 or competitive_percentage > 60) else "No"` |
-| **Training accuracy (with ClosePrice)?** | `{python} f"{train_accuracy_with_close*100:.2f}%"` |
-| **Validation accuracy (with ClosePrice)?** | `{python} f"{val_accuracy_with_close*100:.2f}%"` |
-| **Training accuracy (without ClosePrice)?** | `{python} f"{train_accuracy_without_close*100:.2f}%"` |
-| **Validation accuracy (without ClosePrice)?** | `{python} f"{val_accuracy_without_close*100:.2f}%"` |
-| **Accuracy change after removing ClosePrice?** | `{python} f"{val_accuracy_change*100:+.2f}%"` |
+```{python}
+#| echo: false
+
+# Create a formatted answers table that displays properly
+from IPython.display import display, HTML
+
+imbalance_answer = "Yes" if (competitive_percentage < 40 or competitive_percentage > 60) else "No"
+
+answers_df = pd.DataFrame({
+    'Question': [
+        'Most competitive category?',
+        'Most competitive day?',
+        '% of auctions competitive?',
+        'Imbalance problem?',
+        'Training accuracy (with ClosePrice)?',
+        'Validation accuracy (with ClosePrice)?',
+        'Training accuracy (without ClosePrice)?',
+        'Validation accuracy (without ClosePrice)?',
+        'Accuracy change after removing ClosePrice?'
+    ],
+    'Answer': [
+        category_competitive['mean'].idxmax(),
+        endday_competitive['mean'].idxmax(),
+        f"{competitive_percentage:.2f}%",
+        imbalance_answer,
+        f"{train_accuracy_with_close*100:.2f}%",
+        f"{val_accuracy_with_close*100:.2f}%",
+        f"{train_accuracy_without_close*100:.2f}%",
+        f"{val_accuracy_without_close*100:.2f}%",
+        f"{val_accuracy_change*100:+.2f}%"
+    ]
+})
+
+# Display the answers table
+display(answers_df.style.set_properties(**{'text-align': 'left'}).hide(axis='index'))
+```
 
 ---
 
