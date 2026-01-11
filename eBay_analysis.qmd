@@ -124,14 +124,27 @@ else:
 ```
 
 ```{python}
-# Violin plot: Distribution of OpenPrice by Competitive Status
+# Violin plot: Distribution of OpenPrice by Competitive Status (outliers removed)
+# Remove outliers using IQR method
+Q1 = ebay_df['OpenPrice'].quantile(0.25)
+Q3 = ebay_df['OpenPrice'].quantile(0.75)
+IQR = Q3 - Q1
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+# Filter data to remove outliers
+ebay_filtered = ebay_df[(ebay_df['OpenPrice'] >= lower_bound) & (ebay_df['OpenPrice'] <= upper_bound)].copy()
+print(f"Removed {len(ebay_df) - len(ebay_filtered)} outliers from {len(ebay_df)} records")
+
+# Create labels for the filtered data
+ebay_filtered['Competitive_Label'] = ebay_filtered['Competitive'].map({0: 'Non-Competitive', 1: 'Competitive'})
+
 plt.figure(figsize=(10, 6))
-ebay_df['Competitive_Label'] = ebay_df['Competitive'].map({0: 'Non-Competitive', 1: 'Competitive'})
-sns.violinplot(x='Competitive_Label', y='OpenPrice', data=ebay_df, 
-               palette=['#E74C3C', '#27AE60'], inner='box')
+sns.violinplot(x='Competitive_Label', y='OpenPrice', data=ebay_filtered, 
+               hue='Competitive_Label', palette=['#E74C3C', '#27AE60'], inner='box', legend=False)
 plt.xlabel('Auction Type', fontsize=12)
 plt.ylabel('Opening Price ($)', fontsize=12)
-plt.title('Distribution of Opening Price: Competitive vs Non-Competitive Auctions', fontsize=14)
+plt.title('Distribution of Opening Price: Competitive vs Non-Competitive Auctions\n(Outliers Removed)', fontsize=14)
 plt.tight_layout()
 plt.show()
 ```

@@ -155,7 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="part-a-import-packages-and-load-data" class="level2">
 <h2 class="anchored" data-anchor-id="part-a-import-packages-and-load-data">Part a: Import Packages and Load Data</h2>
-<div id="387d3612" class="cell" data-execution_count="1">
+<div id="734f8ccc" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn <span class="im">as</span> sk</span>
@@ -179,7 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 First 5 rows of the dataset:</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 
 
@@ -262,7 +262,7 @@ First 5 rows of the dataset:</code></pre>
 </section>
 <section id="part-b-observe-variables-in-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="part-b-observe-variables-in-the-dataset">Part b: Observe Variables in the Dataset</h2>
-<div id="064175c0" class="cell" data-execution_count="2">
+<div id="12d1454e" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Data Types ---"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_df.dtypes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -278,13 +278,13 @@ Competitive       int64
 dtype: object</code></pre>
 </div>
 </div>
-<div id="28890f3c" class="cell" data-execution_count="3">
+<div id="ef182f76" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Summary Statistics ---"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ebay_df.describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Summary Statistics ---</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
@@ -370,7 +370,7 @@ dtype: object</code></pre>
 </div>
 </div>
 </div>
-<div id="8b6be779" class="cell" data-execution_count="4">
+<div id="83c0d5ed" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Info about the dataset ---"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ebay_df.info()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -397,7 +397,7 @@ memory usage: 123.4+ KB</code></pre>
 <h2 class="anchored" data-anchor-id="part-c-explore-categorical-variables-vs-competitive-auctions">Part c: Explore Categorical Variables vs Competitive Auctions</h2>
 <section id="category-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="category-analysis">Category Analysis</h3>
-<div id="1ac55ec8" class="cell" data-execution_count="5">
+<div id="ab02271f" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Category ---"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>category_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'Category'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>category_competitive <span class="op">=</span> category_competitive.sort_values(<span class="st">'mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
@@ -433,14 +433,14 @@ Category with MOST competitive auctions: Photography (84.62% competitive rate)</
 </section>
 <section id="currency-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="currency-analysis">Currency Analysis</h3>
-<div id="d38755d1" class="cell" data-execution_count="6">
+<div id="76eab87a" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Currency ---"</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>currency_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'currency'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>currency_competitive</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Competitive Auctions by Currency ---</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
@@ -482,7 +482,7 @@ Category with MOST competitive auctions: Photography (84.62% competitive rate)</
 </section>
 <section id="end-day-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="end-day-analysis">End Day Analysis</h3>
-<div id="674e90bc" class="cell" data-execution_count="7">
+<div id="e796baad" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by End Day ---"</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>endday_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'endDay'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>endday_competitive <span class="op">=</span> endday_competitive.sort_values(<span class="st">'mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
@@ -507,14 +507,14 @@ Day with MOST competitive auctions: Mon (67.34% competitive rate)</code></pre>
 </section>
 <section id="duration-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="duration-analysis">Duration Analysis</h3>
-<div id="481843c0" class="cell" data-execution_count="8">
+<div id="161af70e" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Duration ---"</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>duration_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'Duration'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>duration_competitive</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Competitive Auctions by Duration ---</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="23">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
@@ -568,7 +568,7 @@ Day with MOST competitive auctions: Mon (67.34% competitive rate)</code></pre>
 <section id="part-d-class-balance-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="part-d-class-balance-analysis">Part d: Class Balance Analysis</h2>
 <p>What percentage of auctions are competitive? Is there an imbalance problem?</p>
-<div id="ff9ef87b" class="cell" data-execution_count="9">
+<div id="e0febaed" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>competitive_counts <span class="op">=</span> ebay_df.groupby(<span class="st">'Competitive'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'count'</span>])</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Count of Competitive vs Non-Competitive Auctions ---"</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(competitive_counts)</span>
@@ -598,21 +598,37 @@ Non-competitive auctions: 45.94%
 ✓ The classes are relatively balanced.</code></pre>
 </div>
 </div>
-<div id="a6b2588a" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Violin plot: Distribution of OpenPrice by Competitive Status</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>ebay_df[<span class="st">'Competitive_Label'</span>] <span class="op">=</span> ebay_df[<span class="st">'Competitive'</span>].<span class="bu">map</span>({<span class="dv">0</span>: <span class="st">'Non-Competitive'</span>, <span class="dv">1</span>: <span class="st">'Competitive'</span>})</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>sns.violinplot(x<span class="op">=</span><span class="st">'Competitive_Label'</span>, y<span class="op">=</span><span class="st">'OpenPrice'</span>, data<span class="op">=</span>ebay_df, </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>               palette<span class="op">=</span>[<span class="st">'#E74C3C'</span>, <span class="st">'#27AE60'</span>], inner<span class="op">=</span><span class="st">'box'</span>)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Auction Type'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Opening Price ($)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Distribution of Opening Price: Competitive vs Non-Competitive Auctions'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="7a6b4e8b" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Violin plot: Distribution of OpenPrice by Competitive Status (outliers removed)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove outliers using IQR method</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Q1 <span class="op">=</span> ebay_df[<span class="st">'OpenPrice'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>Q3 <span class="op">=</span> ebay_df[<span class="st">'OpenPrice'</span>].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>IQR <span class="op">=</span> Q3 <span class="op">-</span> Q1</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="op">=</span> Q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> IQR</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="op">=</span> Q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> IQR</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter data to remove outliers</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>ebay_filtered <span class="op">=</span> ebay_df[(ebay_df[<span class="st">'OpenPrice'</span>] <span class="op">&gt;=</span> lower_bound) <span class="op">&amp;</span> (ebay_df[<span class="st">'OpenPrice'</span>] <span class="op">&lt;=</span> upper_bound)].copy()</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Removed </span><span class="sc">{</span><span class="bu">len</span>(ebay_df) <span class="op">-</span> <span class="bu">len</span>(ebay_filtered)<span class="sc">}</span><span class="ss"> outliers from </span><span class="sc">{</span><span class="bu">len</span>(ebay_df)<span class="sc">}</span><span class="ss"> records"</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create labels for the filtered data</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>ebay_filtered[<span class="st">'Competitive_Label'</span>] <span class="op">=</span> ebay_filtered[<span class="st">'Competitive'</span>].<span class="bu">map</span>({<span class="dv">0</span>: <span class="st">'Non-Competitive'</span>, <span class="dv">1</span>: <span class="st">'Competitive'</span>})</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>sns.violinplot(x<span class="op">=</span><span class="st">'Competitive_Label'</span>, y<span class="op">=</span><span class="st">'OpenPrice'</span>, data<span class="op">=</span>ebay_filtered, </span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>               hue<span class="op">=</span><span class="st">'Competitive_Label'</span>, palette<span class="op">=</span>[<span class="st">'#E74C3C'</span>, <span class="st">'#27AE60'</span>], inner<span class="op">=</span><span class="st">'box'</span>, legend<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Auction Type'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Opening Price ($)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Distribution of Opening Price: Competitive vs Non-Competitive Auctions</span><span class="ch">\n</span><span class="st">(Outliers Removed)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removed 206 outliers from 1972 records</code></pre>
+</div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="eBay_analysis_files/figure-html/cell-11-output-1.png" width="951" height="566" class="figure-img"></p>
+<p><img src="eBay_analysis_files/figure-html/cell-11-output-2.png" width="951" height="566" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -620,89 +636,88 @@ Non-competitive auctions: 45.94%
 </section>
 <section id="part-e-converting-variables-to-category-type" class="level2">
 <h2 class="anchored" data-anchor-id="part-e-converting-variables-to-category-type">Part e: Converting Variables to Category Type</h2>
-<div id="8dad45e7" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a copy for modeling</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> ebay_df.copy()</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to category type</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'currency'</span>] <span class="op">=</span> ebay_model[<span class="st">'currency'</span>].astype(<span class="st">'category'</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'endDay'</span>] <span class="op">=</span> ebay_model[<span class="st">'endDay'</span>].astype(<span class="st">'category'</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'Category'</span>] <span class="op">=</span> ebay_model[<span class="st">'Category'</span>].astype(<span class="st">'category'</span>)</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'Competitive'</span>] <span class="op">=</span> ebay_model[<span class="st">'Competitive'</span>].astype(<span class="st">'category'</span>)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Variable types after conversion:"</span>)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_model.dtypes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="a07e6b48" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a copy for modeling</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> ebay_df.copy()</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to category type</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'currency'</span>] <span class="op">=</span> ebay_model[<span class="st">'currency'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'endDay'</span>] <span class="op">=</span> ebay_model[<span class="st">'endDay'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'Category'</span>] <span class="op">=</span> ebay_model[<span class="st">'Category'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>ebay_model[<span class="st">'Competitive'</span>] <span class="op">=</span> ebay_model[<span class="st">'Competitive'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Variable types after conversion:"</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_model.dtypes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Variable types after conversion:
-Category             category
-currency             category
-sellerRating            int64
-Duration                int64
-endDay               category
-ClosePrice            float64
-OpenPrice             float64
-Competitive          category
-Competitive_Label      object
+Category        category
+currency        category
+sellerRating       int64
+Duration           int64
+endDay          category
+ClosePrice       float64
+OpenPrice        float64
+Competitive     category
 dtype: object</code></pre>
 </div>
 </div>
 </section>
 <section id="part-f-creating-dummy-variables" class="level2">
 <h2 class="anchored" data-anchor-id="part-f-creating-dummy-variables">Part f: Creating Dummy Variables</h2>
-<div id="f99d1d14" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dummy variables (dtype=int for statsmodels compatibility)</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> pd.get_dummies(ebay_model, prefix_sep<span class="op">=</span><span class="st">'_'</span>, drop_first<span class="op">=</span><span class="va">False</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shape after creating dummies: </span><span class="sc">{</span>ebay_model<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Columns after creating dummies:"</span>)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_model.columns.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="259155d8" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dummy variables (dtype=int for statsmodels compatibility)</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> pd.get_dummies(ebay_model, prefix_sep<span class="op">=</span><span class="st">'_'</span>, drop_first<span class="op">=</span><span class="va">False</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shape after creating dummies: </span><span class="sc">{</span>ebay_model<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Columns after creating dummies:"</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_model.columns.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Shape after creating dummies: (1972, 36)
+<pre><code>Shape after creating dummies: (1972, 34)
 
 Columns after creating dummies:
-['sellerRating', 'Duration', 'ClosePrice', 'OpenPrice', 'Category_Antique/Art/Craft', 'Category_Automotive', 'Category_Books', 'Category_Business/Industrial', 'Category_Clothing/Accessories', 'Category_Coins/Stamps', 'Category_Collectibles', 'Category_Computer', 'Category_Electronics', 'Category_EverythingElse', 'Category_Health/Beauty', 'Category_Home/Garden', 'Category_Jewelry', 'Category_Music/Movie/Game', 'Category_Photography', 'Category_Pottery/Glass', 'Category_SportingGoods', 'Category_Toys/Hobbies', 'currency_EUR', 'currency_GBP', 'currency_US', 'endDay_Fri', 'endDay_Mon', 'endDay_Sat', 'endDay_Sun', 'endDay_Thu', 'endDay_Tue', 'endDay_Wed', 'Competitive_0', 'Competitive_1', 'Competitive_Label_Competitive', 'Competitive_Label_Non-Competitive']</code></pre>
+['sellerRating', 'Duration', 'ClosePrice', 'OpenPrice', 'Category_Antique/Art/Craft', 'Category_Automotive', 'Category_Books', 'Category_Business/Industrial', 'Category_Clothing/Accessories', 'Category_Coins/Stamps', 'Category_Collectibles', 'Category_Computer', 'Category_Electronics', 'Category_EverythingElse', 'Category_Health/Beauty', 'Category_Home/Garden', 'Category_Jewelry', 'Category_Music/Movie/Game', 'Category_Photography', 'Category_Pottery/Glass', 'Category_SportingGoods', 'Category_Toys/Hobbies', 'currency_EUR', 'currency_GBP', 'currency_US', 'endDay_Fri', 'endDay_Mon', 'endDay_Sat', 'endDay_Sun', 'endDay_Thu', 'endDay_Tue', 'endDay_Wed', 'Competitive_0', 'Competitive_1']</code></pre>
 </div>
 </div>
-<div id="25f48c8d" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop reference categories (first category for each variable)</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Category_Automotive, currency_EUR, endDay_Mon</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>columns_to_drop <span class="op">=</span> [<span class="st">'Category_Automotive'</span>, <span class="st">'currency_EUR'</span>, <span class="st">'endDay_Mon'</span>, </span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'Competitive_0'</span>]  <span class="co"># Also drop one of the Competitive dummies</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check which columns exist before dropping</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>existing_cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> columns_to_drop <span class="cf">if</span> col <span class="kw">in</span> ebay_model.columns]</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>ebay_model.drop(columns<span class="op">=</span>existing_cols, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename Competitive_1 to Competitive</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'Competitive_1'</span> <span class="kw">in</span> ebay_model.columns:</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    ebay_model.rename(columns<span class="op">=</span>{<span class="st">'Competitive_1'</span>: <span class="st">'Competitive'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shape after dropping reference categories: </span><span class="sc">{</span>ebay_model<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final columns for modeling:"</span>)</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_model.columns.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="d978c33b" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop reference categories (first category for each variable)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Category_Automotive, currency_EUR, endDay_Mon</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>columns_to_drop <span class="op">=</span> [<span class="st">'Category_Automotive'</span>, <span class="st">'currency_EUR'</span>, <span class="st">'endDay_Mon'</span>, </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'Competitive_0'</span>]  <span class="co"># Also drop one of the Competitive dummies</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check which columns exist before dropping</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>existing_cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> columns_to_drop <span class="cf">if</span> col <span class="kw">in</span> ebay_model.columns]</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>ebay_model.drop(columns<span class="op">=</span>existing_cols, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename Competitive_1 to Competitive</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'Competitive_1'</span> <span class="kw">in</span> ebay_model.columns:</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    ebay_model.rename(columns<span class="op">=</span>{<span class="st">'Competitive_1'</span>: <span class="st">'Competitive'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shape after dropping reference categories: </span><span class="sc">{</span>ebay_model<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final columns for modeling:"</span>)</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_model.columns.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Shape after dropping reference categories: (1972, 32)
+<pre><code>Shape after dropping reference categories: (1972, 30)
 
 Final columns for modeling:
-['sellerRating', 'Duration', 'ClosePrice', 'OpenPrice', 'Category_Antique/Art/Craft', 'Category_Books', 'Category_Business/Industrial', 'Category_Clothing/Accessories', 'Category_Coins/Stamps', 'Category_Collectibles', 'Category_Computer', 'Category_Electronics', 'Category_EverythingElse', 'Category_Health/Beauty', 'Category_Home/Garden', 'Category_Jewelry', 'Category_Music/Movie/Game', 'Category_Photography', 'Category_Pottery/Glass', 'Category_SportingGoods', 'Category_Toys/Hobbies', 'currency_GBP', 'currency_US', 'endDay_Fri', 'endDay_Sat', 'endDay_Sun', 'endDay_Thu', 'endDay_Tue', 'endDay_Wed', 'Competitive', 'Competitive_Label_Competitive', 'Competitive_Label_Non-Competitive']</code></pre>
+['sellerRating', 'Duration', 'ClosePrice', 'OpenPrice', 'Category_Antique/Art/Craft', 'Category_Books', 'Category_Business/Industrial', 'Category_Clothing/Accessories', 'Category_Coins/Stamps', 'Category_Collectibles', 'Category_Computer', 'Category_Electronics', 'Category_EverythingElse', 'Category_Health/Beauty', 'Category_Home/Garden', 'Category_Jewelry', 'Category_Music/Movie/Game', 'Category_Photography', 'Category_Pottery/Glass', 'Category_SportingGoods', 'Category_Toys/Hobbies', 'currency_GBP', 'currency_US', 'endDay_Fri', 'endDay_Sat', 'endDay_Sun', 'endDay_Thu', 'endDay_Tue', 'endDay_Wed', 'Competitive']</code></pre>
 </div>
 </div>
 </section>
 <section id="part-g-data-partitioning-60-train-40-test" class="level2">
 <h2 class="anchored" data-anchor-id="part-g-data-partitioning-60-train-40-test">Part g: Data Partitioning (60% Train / 40% Test)</h2>
-<div id="74d55591" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define X (features) and y (target)</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert y to int to ensure compatibility with statsmodels</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> ebay_model[<span class="st">'Competitive'</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> ebay_model.drop(columns<span class="op">=</span>[<span class="st">'Competitive'</span>])</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data with random_state=202</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.40</span>, random_state<span class="op">=</span><span class="dv">202</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training set size: </span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="op">/</span><span class="bu">len</span>(X)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test set size: </span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="op">/</span><span class="bu">len</span>(X)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="5f704474" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define X (features) and y (target)</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert y to int to ensure compatibility with statsmodels</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> ebay_model[<span class="st">'Competitive'</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> ebay_model.drop(columns<span class="op">=</span>[<span class="st">'Competitive'</span>])</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data with random_state=202</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.40</span>, random_state<span class="op">=</span><span class="dv">202</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training set size: </span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="op">/</span><span class="bu">len</span>(X)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test set size: </span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="op">/</span><span class="bu">len</span>(X)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Training set size: 1183 (60.0%)
 Test set size: 789 (40.0%)</code></pre>
@@ -711,71 +726,69 @@ Test set size: 789 (40.0%)</code></pre>
 </section>
 <section id="modeling-part-1-logistic-regression-with-all-variables" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-part-1-logistic-regression-with-all-variables">Modeling Part 1: Logistic Regression with ALL Variables</h2>
-<div id="52a34390" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using statsmodels for detailed output</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>X_train_const <span class="op">=</span> sm.add_constant(X_train)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>X_test_const <span class="op">=</span> sm.add_constant(X_test)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit logistic regression using 'bfgs' method to avoid singular matrix issues</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>logit_model <span class="op">=</span> sm.Logit(y_train, X_train_const)</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> logit_model.fit(method<span class="op">=</span><span class="st">'bfgs'</span>, disp<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Logistic Regression Summary (with all variables including ClosePrice) ---"</span>)</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="7e1bd89c" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using statsmodels for detailed output</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>X_train_const <span class="op">=</span> sm.add_constant(X_train)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>X_test_const <span class="op">=</span> sm.add_constant(X_test)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit logistic regression using 'bfgs' method to avoid singular matrix issues</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>logit_model <span class="op">=</span> sm.Logit(y_train, X_train_const)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> logit_model.fit(method<span class="op">=</span><span class="st">'bfgs'</span>, disp<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Logistic Regression Summary (with all variables including ClosePrice) ---"</span>)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Logistic Regression Summary (with all variables including ClosePrice) ---
                            Logit Regression Results                           
 ==============================================================================
 Dep. Variable:            Competitive   No. Observations:                 1183
-Model:                          Logit   Df Residuals:                     1152
-Method:                           MLE   Df Model:                           30
+Model:                          Logit   Df Residuals:                     1153
+Method:                           MLE   Df Model:                           29
 Date:                Sun, 11 Jan 2026   Pseudo R-squ.:               -0.004879
-Time:                        12:31:52   Log-Likelihood:                -819.99
+Time:                        12:45:05   Log-Likelihood:                -819.99
 converged:                      False   LL-Null:                       -816.01
 Covariance Type:            nonrobust   LLR p-value:                     1.000
-=====================================================================================================
-                                        coef    std err          z      P&gt;|z|      [0.025      0.975]
------------------------------------------------------------------------------------------------------
-const                                      0        nan        nan        nan         nan         nan
-sellerRating                               0        nan        nan        nan         nan         nan
-Duration                                   0        nan        nan        nan         nan         nan
-ClosePrice                                 0        nan        nan        nan         nan         nan
-OpenPrice                                  0        nan        nan        nan         nan         nan
-Category_Antique/Art/Craft                 0        nan        nan        nan         nan         nan
-Category_Books                             0        nan        nan        nan         nan         nan
-Category_Business/Industrial               0        nan        nan        nan         nan         nan
-Category_Clothing/Accessories              0        nan        nan        nan         nan         nan
-Category_Coins/Stamps                      0        nan        nan        nan         nan         nan
-Category_Collectibles                      0        nan        nan        nan         nan         nan
-Category_Computer                          0        nan        nan        nan         nan         nan
-Category_Electronics                       0        nan        nan        nan         nan         nan
-Category_EverythingElse                    0        nan        nan        nan         nan         nan
-Category_Health/Beauty                     0        nan        nan        nan         nan         nan
-Category_Home/Garden                       0        nan        nan        nan         nan         nan
-Category_Jewelry                           0        nan        nan        nan         nan         nan
-Category_Music/Movie/Game                  0        nan        nan        nan         nan         nan
-Category_Photography                       0        nan        nan        nan         nan         nan
-Category_Pottery/Glass                     0        nan        nan        nan         nan         nan
-Category_SportingGoods                     0        nan        nan        nan         nan         nan
-Category_Toys/Hobbies                      0        nan        nan        nan         nan         nan
-currency_GBP                               0        nan        nan        nan         nan         nan
-currency_US                                0        nan        nan        nan         nan         nan
-endDay_Fri                                 0        nan        nan        nan         nan         nan
-endDay_Sat                                 0        nan        nan        nan         nan         nan
-endDay_Sun                                 0        nan        nan        nan         nan         nan
-endDay_Thu                                 0        nan        nan        nan         nan         nan
-endDay_Tue                                 0        nan        nan        nan         nan         nan
-endDay_Wed                                 0        nan        nan        nan         nan         nan
-Competitive_Label_Competitive              0        nan        nan        nan         nan         nan
-Competitive_Label_Non-Competitive          0        nan        nan        nan         nan         nan
-=====================================================================================================</code></pre>
+=================================================================================================
+                                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+-------------------------------------------------------------------------------------------------
+const                                  0      0.377          0      1.000      -0.739       0.739
+sellerRating                           0   1.16e-05          0      1.000   -2.28e-05    2.28e-05
+Duration                               0      0.035          0      1.000      -0.069       0.069
+ClosePrice                             0      0.001          0      1.000      -0.002       0.002
+OpenPrice                              0      0.002          0      1.000      -0.003       0.003
+Category_Antique/Art/Craft             0      0.311          0      1.000      -0.610       0.610
+Category_Books                         0      0.412          0      1.000      -0.807       0.807
+Category_Business/Industrial           0      0.642          0      1.000      -1.259       1.259
+Category_Clothing/Accessories          0      0.330          0      1.000      -0.647       0.647
+Category_Coins/Stamps                  0      0.512          0      1.000      -1.004       1.004
+Category_Collectibles                  0      0.283          0      1.000      -0.555       0.555
+Category_Computer                      0      0.473          0      1.000      -0.927       0.927
+Category_Electronics                   0      0.389          0      1.000      -0.762       0.762
+Category_EverythingElse                0      0.710          0      1.000      -1.391       1.391
+Category_Health/Beauty                 0      0.394          0      1.000      -0.772       0.772
+Category_Home/Garden                   0      0.338          0      1.000      -0.663       0.663
+Category_Jewelry                       0      0.366          0      1.000      -0.718       0.718
+Category_Music/Movie/Game              0      0.265          0      1.000      -0.519       0.519
+Category_Photography                   0      0.741          0      1.000      -1.452       1.452
+Category_Pottery/Glass                 0      0.673          0      1.000      -1.318       1.318
+Category_SportingGoods                 0      0.339          0      1.000      -0.665       0.665
+Category_Toys/Hobbies                  0      0.279          0      1.000      -0.546       0.546
+currency_GBP                           0      0.435          0      1.000      -0.853       0.853
+currency_US                            0      0.185          0      1.000      -0.364       0.364
+endDay_Fri                             0      0.200          0      1.000      -0.393       0.393
+endDay_Sat                             0      0.191          0      1.000      -0.375       0.375
+endDay_Sun                             0      0.189          0      1.000      -0.371       0.371
+endDay_Thu                             0      0.403          0      1.000      -0.789       0.789
+endDay_Tue                             0      0.242          0      1.000      -0.475       0.475
+endDay_Wed                             0      0.341          0      1.000      -0.667       0.667
+=================================================================================================</code></pre>
 </div>
 </div>
-<div id="899d1e69" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using sklearn for predictions</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>lr_model <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">202</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>lr_model.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="31">
+<div id="f9c73e82" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using sklearn for predictions</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>lr_model <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">202</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>lr_model.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
 <style>#sk-container-id-1 {
   /* Definition of color scheme common for light and dark mode */
   --sklearn-color-text: #000;
@@ -1388,43 +1401,43 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </section>
 <section id="modeling-part-2-confusion-matrix-and-accuracy" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-part-2-confusion-matrix-and-accuracy">Modeling Part 2: Confusion Matrix and Accuracy</h2>
-<div id="d5fe7a86" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions on test set</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> lr_model.predict(X_test)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Confusion Matrix (Validation Data) ---"</span>)</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 Predicted"</span>)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 0       1"</span>)</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Actual 0      </span><span class="sc">{</span>cm[<span class="dv">0</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm[<span class="dv">0</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"       1      </span><span class="sc">{</span>cm[<span class="dv">1</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy</span></span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="0519d072" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions on test set</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> lr_model.predict(X_test)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Confusion Matrix (Validation Data) ---"</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 Predicted"</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 0       1"</span>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Actual 0      </span><span class="sc">{</span>cm[<span class="dv">0</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm[<span class="dv">0</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"       1      </span><span class="sc">{</span>cm[<span class="dv">1</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Confusion Matrix (Validation Data) ---
                  Predicted
                  0       1
-Actual 0       363       0
-       1         0     426
+Actual 0       293      70
+       1       107     319
 
-Accuracy: 1.0000 (100.00%)</code></pre>
+Accuracy: 0.7757 (77.57%)</code></pre>
 </div>
 </div>
-<div id="86bacdaa" class="cell" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix Plot</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, </span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>            yticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>            annot_kws<span class="op">=</span>{<span class="st">'size'</span>: <span class="dv">14</span>})</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Actual'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix (With ClosePrice)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="160b9cf2" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix Plot</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>            yticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>            annot_kws<span class="op">=</span>{<span class="st">'size'</span>: <span class="dv">14</span>})</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Actual'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix (With ClosePrice)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1433,20 +1446,20 @@ Accuracy: 1.0000 (100.00%)</code></pre>
 </div>
 </div>
 </div>
-<div id="38d83598" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Classification Report ---"</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="07dec655" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Classification Report ---"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Classification Report ---
               precision    recall  f1-score   support
 
-           0       1.00      1.00      1.00       363
-           1       1.00      1.00      1.00       426
+           0       0.73      0.81      0.77       363
+           1       0.82      0.75      0.78       426
 
-    accuracy                           1.00       789
-   macro avg       1.00      1.00      1.00       789
-weighted avg       1.00      1.00      1.00       789
+    accuracy                           0.78       789
+   macro avg       0.78      0.78      0.78       789
+weighted avg       0.78      0.78      0.78       789
 </code></pre>
 </div>
 </div>
@@ -1466,56 +1479,56 @@ weighted avg       1.00      1.00      1.00       789
 </section>
 <section id="modeling-part-4-model-without-closeprice" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-part-4-model-without-closeprice">Modeling Part 4: Model WITHOUT ClosePrice</h2>
-<div id="b4a90de5" class="cell" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove ClosePrice from features</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>X_no_close <span class="op">=</span> X.drop(columns<span class="op">=</span>[<span class="st">'ClosePrice'</span>])</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Split again with same random state</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>X_train_nc, X_test_nc, y_train_nc, y_test_nc <span class="op">=</span> train_test_split(</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    X_no_close, y, test_size<span class="op">=</span><span class="fl">0.40</span>, random_state<span class="op">=</span><span class="dv">202</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit new model without ClosePrice</span></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>lr_model_nc <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">202</span>)</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>lr_model_nc.fit(X_train_nc, y_train_nc)</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions</span></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>y_pred_nc <span class="op">=</span> lr_model_nc.predict(X_test_nc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="d58323cc" class="cell" data-execution_count="21">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>cm_nc <span class="op">=</span> confusion_matrix(y_test_nc, y_pred_nc)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Confusion Matrix WITHOUT ClosePrice ---"</span>)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 Predicted"</span>)</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 0       1"</span>)</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Actual 0      </span><span class="sc">{</span>cm_nc[<span class="dv">0</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm_nc[<span class="dv">0</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"       1      </span><span class="sc">{</span>cm_nc[<span class="dv">1</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm_nc[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
+<div id="b53c9516" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove ClosePrice from features</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>X_no_close <span class="op">=</span> X.drop(columns<span class="op">=</span>[<span class="st">'ClosePrice'</span>])</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Split again with same random state</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>X_train_nc, X_test_nc, y_train_nc, y_test_nc <span class="op">=</span> train_test_split(</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    X_no_close, y, test_size<span class="op">=</span><span class="fl">0.40</span>, random_state<span class="op">=</span><span class="dv">202</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co"># New Accuracy</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>accuracy_nc <span class="op">=</span> accuracy_score(y_test_nc, y_pred_nc)</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Accuracy WITHOUT ClosePrice: </span><span class="sc">{</span>accuracy_nc<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy_nc<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit new model without ClosePrice</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>lr_model_nc <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">202</span>)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>lr_model_nc.fit(X_train_nc, y_train_nc)</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>y_pred_nc <span class="op">=</span> lr_model_nc.predict(X_test_nc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="502d2c1f" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>cm_nc <span class="op">=</span> confusion_matrix(y_test_nc, y_pred_nc)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Confusion Matrix WITHOUT ClosePrice ---"</span>)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 Predicted"</span>)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"                 0       1"</span>)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Actual 0      </span><span class="sc">{</span>cm_nc[<span class="dv">0</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm_nc[<span class="dv">0</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"       1      </span><span class="sc">{</span>cm_nc[<span class="dv">1</span>,<span class="dv">0</span>]<span class="sc">:4d}</span><span class="ss">    </span><span class="sc">{</span>cm_nc[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">:4d}</span><span class="ss">"</span>)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co"># New Accuracy</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>accuracy_nc <span class="op">=</span> accuracy_score(y_test_nc, y_pred_nc)</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Accuracy WITHOUT ClosePrice: </span><span class="sc">{</span>accuracy_nc<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy_nc<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Confusion Matrix WITHOUT ClosePrice ---
                  Predicted
                  0       1
-Actual 0       363       0
-       1         0     426
+Actual 0       209     154
+       1       130     296
 
-Accuracy WITHOUT ClosePrice: 1.0000 (100.00%)</code></pre>
+Accuracy WITHOUT ClosePrice: 0.6401 (64.01%)</code></pre>
 </div>
 </div>
-<div id="49244f4c" class="cell" data-execution_count="22">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix Plot (Without ClosePrice)</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm_nc, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Oranges'</span>, </span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>            yticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>            annot_kws<span class="op">=</span>{<span class="st">'size'</span>: <span class="dv">14</span>})</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Actual'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix (Without ClosePrice)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="b65fab2c" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix Plot (Without ClosePrice)</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm_nc, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Oranges'</span>, </span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>            yticklabels<span class="op">=</span>[<span class="st">'Non-Competitive (0)'</span>, <span class="st">'Competitive (1)'</span>],</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>            annot_kws<span class="op">=</span>{<span class="st">'size'</span>: <span class="dv">14</span>})</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Actual'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix (Without ClosePrice)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1524,99 +1537,99 @@ Accuracy WITHOUT ClosePrice: 1.0000 (100.00%)</code></pre>
 </div>
 </div>
 </div>
-<div id="9e64cc13" class="cell" data-execution_count="23">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change in accuracy</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>accuracy_change <span class="op">=</span> accuracy_nc <span class="op">-</span> accuracy</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"--- Comparison ---"</span>)</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy WITH ClosePrice:    </span><span class="sc">{</span>accuracy<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy WITHOUT ClosePrice: </span><span class="sc">{</span>accuracy_nc<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy_nc<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Change in Accuracy:          </span><span class="sc">{</span>accuracy_change<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> accuracy_change <span class="op">&lt;</span> <span class="dv">0</span>:</span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">⚠️  Accuracy DECREASED by </span><span class="sc">{</span><span class="bu">abs</span>(accuracy_change)<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">% after removing ClosePrice."</span>)</span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   This confirms that ClosePrice was contributing significantly to the model,"</span>)</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   but for practical predictions, the model without ClosePrice is more appropriate."</span>)</span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✓ Accuracy changed by </span><span class="sc">{</span>accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">% after removing ClosePrice."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="599078a5" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change in accuracy</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>accuracy_change <span class="op">=</span> accuracy_nc <span class="op">-</span> accuracy</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"--- Comparison ---"</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy WITH ClosePrice:    </span><span class="sc">{</span>accuracy<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy WITHOUT ClosePrice: </span><span class="sc">{</span>accuracy_nc<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy_nc<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Change in Accuracy:          </span><span class="sc">{</span>accuracy_change<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> accuracy_change <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">⚠️  Accuracy DECREASED by </span><span class="sc">{</span><span class="bu">abs</span>(accuracy_change)<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">% after removing ClosePrice."</span>)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   This confirms that ClosePrice was contributing significantly to the model,"</span>)</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   but for practical predictions, the model without ClosePrice is more appropriate."</span>)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✓ Accuracy changed by </span><span class="sc">{</span>accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">% after removing ClosePrice."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Comparison ---
-Accuracy WITH ClosePrice:    1.0000 (100.00%)
-Accuracy WITHOUT ClosePrice: 1.0000 (100.00%)
-Change in Accuracy:          0.0000 (0.00%)
+Accuracy WITH ClosePrice:    0.7757 (77.57%)
+Accuracy WITHOUT ClosePrice: 0.6401 (64.01%)
+Change in Accuracy:          -0.1356 (-13.56%)
 
-✓ Accuracy changed by 0.00% after removing ClosePrice.</code></pre>
+⚠️  Accuracy DECREASED by 13.56% after removing ClosePrice.
+   This confirms that ClosePrice was contributing significantly to the model,
+   but for practical predictions, the model without ClosePrice is more appropriate.</code></pre>
 </div>
 </div>
-<div id="c0be726e" class="cell" data-execution_count="24">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report for model without ClosePrice</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Classification Report (Without ClosePrice) ---"</span>)</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test_nc, y_pred_nc))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="7cc3115d" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report for model without ClosePrice</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Classification Report (Without ClosePrice) ---"</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test_nc, y_pred_nc))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Classification Report (Without ClosePrice) ---
               precision    recall  f1-score   support
 
-           0       1.00      1.00      1.00       363
-           1       1.00      1.00      1.00       426
+           0       0.62      0.58      0.60       363
+           1       0.66      0.69      0.68       426
 
-    accuracy                           1.00       789
-   macro avg       1.00      1.00      1.00       789
-weighted avg       1.00      1.00      1.00       789
+    accuracy                           0.64       789
+   macro avg       0.64      0.64      0.64       789
+weighted avg       0.64      0.64      0.64       789
 </code></pre>
 </div>
 </div>
-<div id="3d845fe4" class="cell" data-execution_count="25">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Statsmodels summary for the model without ClosePrice</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Logistic Regression Summary (Without ClosePrice) ---"</span>)</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>X_train_nc_const <span class="op">=</span> sm.add_constant(X_train_nc)</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>logit_model_nc <span class="op">=</span> sm.Logit(y_train_nc, X_train_nc_const)</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>result_nc <span class="op">=</span> logit_model_nc.fit(method<span class="op">=</span><span class="st">'bfgs'</span>, disp<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result_nc.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2dc46772" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Statsmodels summary for the model without ClosePrice</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Logistic Regression Summary (Without ClosePrice) ---"</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>X_train_nc_const <span class="op">=</span> sm.add_constant(X_train_nc)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>logit_model_nc <span class="op">=</span> sm.Logit(y_train_nc, X_train_nc_const)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>result_nc <span class="op">=</span> logit_model_nc.fit(method<span class="op">=</span><span class="st">'bfgs'</span>, disp<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result_nc.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Logistic Regression Summary (Without ClosePrice) ---
                            Logit Regression Results                           
 ==============================================================================
 Dep. Variable:            Competitive   No. Observations:                 1183
-Model:                          Logit   Df Residuals:                     1153
-Method:                           MLE   Df Model:                           29
+Model:                          Logit   Df Residuals:                     1154
+Method:                           MLE   Df Model:                           28
 Date:                Sun, 11 Jan 2026   Pseudo R-squ.:               -0.004879
-Time:                        12:31:53   Log-Likelihood:                -819.99
+Time:                        12:45:06   Log-Likelihood:                -819.99
 converged:                      False   LL-Null:                       -816.01
 Covariance Type:            nonrobust   LLR p-value:                     1.000
-=====================================================================================================
-                                        coef    std err          z      P&gt;|z|      [0.025      0.975]
------------------------------------------------------------------------------------------------------
-const                                      0        nan        nan        nan         nan         nan
-sellerRating                               0        nan        nan        nan         nan         nan
-Duration                                   0        nan        nan        nan         nan         nan
-OpenPrice                                  0        nan        nan        nan         nan         nan
-Category_Antique/Art/Craft                 0        nan        nan        nan         nan         nan
-Category_Books                             0        nan        nan        nan         nan         nan
-Category_Business/Industrial               0        nan        nan        nan         nan         nan
-Category_Clothing/Accessories              0        nan        nan        nan         nan         nan
-Category_Coins/Stamps                      0        nan        nan        nan         nan         nan
-Category_Collectibles                      0        nan        nan        nan         nan         nan
-Category_Computer                          0        nan        nan        nan         nan         nan
-Category_Electronics                       0        nan        nan        nan         nan         nan
-Category_EverythingElse                    0        nan        nan        nan         nan         nan
-Category_Health/Beauty                     0        nan        nan        nan         nan         nan
-Category_Home/Garden                       0        nan        nan        nan         nan         nan
-Category_Jewelry                           0        nan        nan        nan         nan         nan
-Category_Music/Movie/Game                  0        nan        nan        nan         nan         nan
-Category_Photography                       0        nan        nan        nan         nan         nan
-Category_Pottery/Glass                     0        nan        nan        nan         nan         nan
-Category_SportingGoods                     0        nan        nan        nan         nan         nan
-Category_Toys/Hobbies                      0        nan        nan        nan         nan         nan
-currency_GBP                               0        nan        nan        nan         nan         nan
-currency_US                                0        nan        nan        nan         nan         nan
-endDay_Fri                                 0        nan        nan        nan         nan         nan
-endDay_Sat                                 0        nan        nan        nan         nan         nan
-endDay_Sun                                 0        nan        nan        nan         nan         nan
-endDay_Thu                                 0        nan        nan        nan         nan         nan
-endDay_Tue                                 0        nan        nan        nan         nan         nan
-endDay_Wed                                 0        nan        nan        nan         nan         nan
-Competitive_Label_Competitive              0        nan        nan        nan         nan         nan
-Competitive_Label_Non-Competitive          0        nan        nan        nan         nan         nan
-=====================================================================================================</code></pre>
+=================================================================================================
+                                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+-------------------------------------------------------------------------------------------------
+const                                  0      0.375          0      1.000      -0.735       0.735
+sellerRating                           0   1.16e-05          0      1.000   -2.27e-05    2.27e-05
+Duration                               0      0.035          0      1.000      -0.069       0.069
+OpenPrice                              0      0.002          0      1.000      -0.003       0.003
+Category_Antique/Art/Craft             0      0.311          0      1.000      -0.609       0.609
+Category_Books                         0      0.412          0      1.000      -0.807       0.807
+Category_Business/Industrial           0      0.642          0      1.000      -1.259       1.259
+Category_Clothing/Accessories          0      0.330          0      1.000      -0.646       0.646
+Category_Coins/Stamps                  0      0.512          0      1.000      -1.004       1.004
+Category_Collectibles                  0      0.283          0      1.000      -0.555       0.555
+Category_Computer                      0      0.473          0      1.000      -0.927       0.927
+Category_Electronics                   0      0.387          0      1.000      -0.758       0.758
+Category_EverythingElse                0      0.709          0      1.000      -1.390       1.390
+Category_Health/Beauty                 0      0.393          0      1.000      -0.771       0.771
+Category_Home/Garden                   0      0.338          0      1.000      -0.663       0.663
+Category_Jewelry                       0      0.366          0      1.000      -0.718       0.718
+Category_Music/Movie/Game              0      0.264          0      1.000      -0.518       0.518
+Category_Photography                   0      0.740          0      1.000      -1.451       1.451
+Category_Pottery/Glass                 0      0.672          0      1.000      -1.318       1.318
+Category_SportingGoods                 0      0.335          0      1.000      -0.657       0.657
+Category_Toys/Hobbies                  0      0.279          0      1.000      -0.546       0.546
+currency_GBP                           0      0.435          0      1.000      -0.853       0.853
+currency_US                            0      0.185          0      1.000      -0.363       0.363
+endDay_Fri                             0      0.200          0      1.000      -0.393       0.393
+endDay_Sat                             0      0.191          0      1.000      -0.374       0.374
+endDay_Sun                             0      0.189          0      1.000      -0.370       0.370
+endDay_Thu                             0      0.402          0      1.000      -0.789       0.789
+endDay_Tue                             0      0.242          0      1.000      -0.474       0.474
+endDay_Wed                             0      0.340          0      1.000      -0.667       0.667
+=================================================================================================</code></pre>
 </div>
 </div>
 </section>
