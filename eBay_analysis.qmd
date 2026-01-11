@@ -14,6 +14,18 @@ execute:
 jupyter: python3
 ---
 
+## Quick Navigation {.unnumbered}
+
+| **Data Exploration** | **Data Preparation** | **Modeling** |
+|:---------------------|:---------------------|:-------------|
+| [Business Problem](#business-problem) | [Part e: Convert to Category](#part-e-converting-variables-to-category-type) | [Model 1: All Variables](#modeling-part-1-logistic-regression-with-all-variables) |
+| [Part a: Load Data](#part-a-import-packages-and-load-data) | [Part f: Dummy Variables](#part-f-creating-dummy-variables) | [Model 2: Confusion Matrix](#modeling-part-2-confusion-matrix-and-accuracy) |
+| [Part b: Observe Variables](#part-b-observe-variables-in-the-dataset) | [Part g: Outlier Analysis](#part-g-outlier-analysis) | [Model 3: ClosePrice Challenge](#modeling-part-3-challenge-of-using-closeprice) |
+| [Part c: Categorical Analysis](#part-c-explore-categorical-variables-vs-competitive-auctions) | [Part h: Data Partitioning](#part-h-data-partitioning-60-train-40-test) | [Model 4: Without ClosePrice](#modeling-part-4-model-without-closeprice) |
+| [Part d: Class Balance](#part-d-class-balance-analysis) | | [Conclusion](#conclusion) |
+
+---
+
 ## Business Problem
 
 The file `eBayAuctions.csv` contains information on 1972 auctions transacted on eBay.com during May-June 2004. The goal is to use these data to build a model that will distinguish competitive auctions from noncompetitive ones.
