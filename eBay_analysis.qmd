@@ -123,6 +123,19 @@ else:
     print("\n✓ The classes are relatively balanced.")
 ```
 
+```{python}
+# Violin plot: Distribution of OpenPrice by Competitive Status
+plt.figure(figsize=(10, 6))
+ebay_df['Competitive_Label'] = ebay_df['Competitive'].map({0: 'Non-Competitive', 1: 'Competitive'})
+sns.violinplot(x='Competitive_Label', y='OpenPrice', data=ebay_df, 
+               palette=['#E74C3C', '#27AE60'], inner='box')
+plt.xlabel('Auction Type', fontsize=12)
+plt.ylabel('Opening Price ($)', fontsize=12)
+plt.title('Distribution of Opening Price: Competitive vs Non-Competitive Auctions', fontsize=14)
+plt.tight_layout()
+plt.show()
+```
+
 ## Part e: Converting Variables to Category Type
 
 ```{python}
@@ -193,9 +206,9 @@ print(f"Test set size: {len(X_test)} ({len(X_test)/len(X)*100:.1f}%)")
 X_train_const = sm.add_constant(X_train)
 X_test_const = sm.add_constant(X_test)
 
-# Fit logistic regression
+# Fit logistic regression using 'bfgs' method to avoid singular matrix issues
 logit_model = sm.Logit(y_train, X_train_const)
-result = logit_model.fit(disp=0)
+result = logit_model.fit(method='bfgs', disp=0)
 
 print("--- Logistic Regression Summary (with all variables including ClosePrice) ---")
 print(result.summary())
@@ -334,39 +347,24 @@ print(classification_report(y_test_nc, y_pred_nc))
 print("--- Logistic Regression Summary (Without ClosePrice) ---")
 X_train_nc_const = sm.add_constant(X_train_nc)
 logit_model_nc = sm.Logit(y_train_nc, X_train_nc_const)
-result_nc = logit_model_nc.fit(disp=0)
+result_nc = logit_model_nc.fit(method='bfgs', disp=0)
 print(result_nc.summary())
-```
-
-## Confusion Matrix Comparison
-
-```{python}
-# Side-by-side comparison of confusion matrices
-fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-
-# With ClosePrice
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=axes[0],
-            xticklabels=['Non-Comp (0)', 'Comp (1)'],
-            yticklabels=['Non-Comp (0)', 'Comp (1)'],
-            annot_kws={'size': 16})
-axes[0].set_xlabel('Predicted', fontsize=12)
-axes[0].set_ylabel('Actual', fontsize=12)
-axes[0].set_title(f'With ClosePrice\nAccuracy: {accuracy:.2%}', fontsize=13)
-
-# Without ClosePrice
-sns.heatmap(cm_nc, annot=True, fmt='d', cmap='Oranges', ax=axes[1],
-            xticklabels=['Non-Comp (0)', 'Comp (1)'],
-            yticklabels=['Non-Comp (0)', 'Comp (1)'],
-            annot_kws={'size': 16})
-axes[1].set_xlabel('Predicted', fontsize=12)
-axes[1].set_ylabel('Actual', fontsize=12)
-axes[1].set_title(f'Without ClosePrice\nAccuracy: {accuracy_nc:.2%}', fontsize=13)
-
-plt.suptitle('Confusion Matrix Comparison', fontsize=15, fontweight='bold', y=1.02)
-plt.tight_layout()
-plt.show()
 ```
 
 ## Conclusion
 
 This analysis built logistic regression models to predict competitive eBay auctions. The key finding is that while including ClosePrice improves accuracy, it creates a data leakage problem since ClosePrice is only known after an auction ends. The practical model (without ClosePrice) should be used for real-world predictions.
+
+### Advantages of Removing ClosePrice
+
+While the model without ClosePrice has lower accuracy, removing this variable provides several important advantages:
+
+1. **Eliminates Data Leakage:** ClosePrice is determined by the auction outcome itself. By removing it, we ensure our model only uses information that would be available BEFORE the auction concludes, making predictions legitimate and unbiased.
+
+2. **Enables Real-Time Predictions:** Without ClosePrice, the model can be deployed to predict competitiveness for NEW auctions as soon as they are listed. Sellers can use this to make informed decisions about their listings before any bids are placed.
+
+3. **Honest Performance Evaluation:** The accuracy of the model without ClosePrice reflects the TRUE predictive power we can expect in practice. The inflated accuracy from including ClosePrice was misleading and would not generalize to real-world applications.
+
+4. **Proper Causal Interpretation:** The remaining predictors (OpenPrice, Duration, Category, etc.) represent genuine factors that INFLUENCE competitiveness, rather than variables that are CAUSED BY competitiveness. This maintains the correct causal direction for prediction.
+
+5. **Actionable Business Insights:** The model now identifies factors that sellers can actually control or consider when listing items (e.g., starting price, auction duration, listing day), providing actionable recommendations for maximizing auction competitiveness.
