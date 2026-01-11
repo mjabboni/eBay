@@ -22,7 +22,8 @@ jupyter: python3
 | [Part a: Load Data](#part-a-import-packages-and-load-data) | [Part f: Dummy Variables](#part-f-creating-dummy-variables) | [Model 2: Confusion Matrix](#modeling-part-2-confusion-matrix-and-accuracy) |
 | [Part b: Observe Variables](#part-b-observe-variables-in-the-dataset) | [Part g: Outlier Analysis](#part-g-outlier-analysis) | [Model 3: ClosePrice Challenge](#modeling-part-3-challenge-of-using-closeprice) |
 | [Part c: Categorical Analysis](#part-c-explore-categorical-variables-vs-competitive-auctions) | [Part h: Data Partitioning](#part-h-data-partitioning-60-train-40-test) | [Model 4: Without ClosePrice](#modeling-part-4-model-without-closeprice) |
-| [Part d: Class Balance](#part-d-class-balance-analysis) | | [Conclusion](#conclusion) |
+| [Part d: Class Balance](#part-d-class-balance-analysis) | | [Key Findings](#summary-of-key-findings) |
+| | | [Conclusion](#conclusion) |
 
 ---
 
@@ -397,6 +398,146 @@ logit_model_nc = sm.Logit(y_train_nc, X_train_nc_const)
 result_nc = logit_model_nc.fit(method='bfgs', disp=0)
 print(result_nc.summary())
 ```
+
+## Summary of Key Findings
+
+This section summarizes the key findings from our analysis by answering the critical questions about eBay auction competitiveness.
+
+```{python}
+# Calculate training accuracies (not just validation)
+# Model WITH ClosePrice - Training Accuracy
+y_train_pred = lr_model.predict(X_train)
+train_accuracy_with_close = accuracy_score(y_train, y_train_pred)
+
+# Model WITHOUT ClosePrice - Training Accuracy  
+y_train_pred_nc = lr_model_nc.predict(X_train_nc)
+train_accuracy_without_close = accuracy_score(y_train_nc, y_train_pred_nc)
+
+# Store validation accuracies (already calculated)
+val_accuracy_with_close = accuracy
+val_accuracy_without_close = accuracy_nc
+
+print("=" * 70)
+print("SUMMARY OF KEY FINDINGS")
+print("=" * 70)
+```
+
+### Q1: Which category has the most competitive auctions? Which day of week?
+
+```{python}
+# Category with most competitive auctions
+print("📊 CATEGORY ANALYSIS:")
+print(f"   Category with MOST competitive auctions: {category_competitive['mean'].idxmax()}")
+print(f"   Competitive Rate: {category_competitive['mean'].max():.2%}")
+print()
+
+# Day of week with most competitive auctions
+print("📅 DAY OF WEEK ANALYSIS:")
+print(f"   Day with MOST competitive auctions: {endday_competitive['mean'].idxmax()}")
+print(f"   Competitive Rate: {endday_competitive['mean'].max():.2%}")
+```
+
+### Q2: What percentage of auctions are competitive?
+
+```{python}
+total_auctions = len(ebay_df)
+competitive_auctions = ebay_df['Competitive'].sum()
+competitive_percentage = (competitive_auctions / total_auctions) * 100
+
+print("📈 COMPETITIVE AUCTION PERCENTAGE:")
+print(f"   Total Auctions: {total_auctions}")
+print(f"   Competitive Auctions: {competitive_auctions}")
+print(f"   Percentage Competitive: {competitive_percentage:.2f}%")
+```
+
+### Q3: Is there an imbalance problem?
+
+```{python}
+print("⚖️ CLASS IMBALANCE ANALYSIS:")
+print(f"   Competitive: {competitive_percentage:.2f}%")
+print(f"   Non-Competitive: {100 - competitive_percentage:.2f}%")
+print()
+
+# Check for imbalance (typically if minority class < 40% or > 60%)
+if competitive_percentage < 40 or competitive_percentage > 60:
+    print("   ⚠️  YES - There IS an imbalance problem.")
+    print(f"   The classes are not evenly balanced ({competitive_percentage:.1f}% vs {100-competitive_percentage:.1f}%)")
+    print("   This could affect model performance, particularly for the minority class.")
+else:
+    print("   ✓ NO - The classes are relatively balanced.")
+```
+
+### Q4-Q7: Model Accuracy Comparison
+
+```{python}
+print("🎯 MODEL ACCURACY SUMMARY:")
+print("-" * 50)
+print()
+print("WITH ClosePrice:")
+print(f"   Q4. Training Accuracy:   {train_accuracy_with_close:.4f} ({train_accuracy_with_close*100:.2f}%)")
+print(f"   Q5. Validation Accuracy: {val_accuracy_with_close:.4f} ({val_accuracy_with_close*100:.2f}%)")
+print()
+print("WITHOUT ClosePrice:")
+print(f"   Q6. Training Accuracy:   {train_accuracy_without_close:.4f} ({train_accuracy_without_close*100:.2f}%)")
+print(f"   Q7. Validation Accuracy: {val_accuracy_without_close:.4f} ({val_accuracy_without_close*100:.2f}%)")
+```
+
+### Q8: Change in accuracy between with and without ClosePrice
+
+```{python}
+train_accuracy_change = train_accuracy_without_close - train_accuracy_with_close
+val_accuracy_change = val_accuracy_without_close - val_accuracy_with_close
+
+print("📉 ACCURACY CHANGE (Without ClosePrice - With ClosePrice):")
+print("-" * 50)
+print(f"   Training Accuracy Change:   {train_accuracy_change:.4f} ({train_accuracy_change*100:.2f}%)")
+print(f"   Validation Accuracy Change: {val_accuracy_change:.4f} ({val_accuracy_change*100:.2f}%)")
+print()
+if val_accuracy_change < 0:
+    print(f"   ⚠️  Removing ClosePrice DECREASED validation accuracy by {abs(val_accuracy_change)*100:.2f}%")
+    print("   However, this is the more appropriate model for real-world predictions")
+    print("   since ClosePrice is not available before the auction ends.")
+else:
+    print(f"   ✓ Removing ClosePrice changed validation accuracy by {val_accuracy_change*100:.2f}%")
+```
+
+### Summary Table
+
+```{python}
+# Create a summary DataFrame
+summary_data = {
+    'Metric': [
+        'Most Competitive Category',
+        'Most Competitive Day',
+        'Competitive Auction %',
+        'Imbalance Problem?',
+        'Training Accuracy (with ClosePrice)',
+        'Validation Accuracy (with ClosePrice)',
+        'Training Accuracy (without ClosePrice)',
+        'Validation Accuracy (without ClosePrice)',
+        'Validation Accuracy Change'
+    ],
+    'Value': [
+        category_competitive['mean'].idxmax(),
+        endday_competitive['mean'].idxmax(),
+        f"{competitive_percentage:.2f}%",
+        "Yes" if (competitive_percentage < 40 or competitive_percentage > 60) else "No",
+        f"{train_accuracy_with_close*100:.2f}%",
+        f"{val_accuracy_with_close*100:.2f}%",
+        f"{train_accuracy_without_close*100:.2f}%",
+        f"{val_accuracy_without_close*100:.2f}%",
+        f"{val_accuracy_change*100:.2f}%"
+    ]
+}
+
+summary_df = pd.DataFrame(summary_data)
+print("\n" + "=" * 70)
+print("COMPLETE SUMMARY TABLE")
+print("=" * 70)
+summary_df
+```
+
+---
 
 ## Conclusion
 

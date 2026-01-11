@@ -110,6 +110,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#key-issues" id="toc-key-issues" class="nav-link" data-scroll-target="#key-issues">Key Issues:</a></li>
   </ul></li>
   <li><a href="#modeling-part-4-model-without-closeprice" id="toc-modeling-part-4-model-without-closeprice" class="nav-link" data-scroll-target="#modeling-part-4-model-without-closeprice">Modeling Part 4: Model WITHOUT ClosePrice</a></li>
+  <li><a href="#summary-of-key-findings" id="toc-summary-of-key-findings" class="nav-link" data-scroll-target="#summary-of-key-findings">Summary of Key Findings</a>
+  <ul class="collapse">
+  <li><a href="#q1-which-category-has-the-most-competitive-auctions-which-day-of-week" id="toc-q1-which-category-has-the-most-competitive-auctions-which-day-of-week" class="nav-link" data-scroll-target="#q1-which-category-has-the-most-competitive-auctions-which-day-of-week">Q1: Which category has the most competitive auctions? Which day of week?</a></li>
+  <li><a href="#q2-what-percentage-of-auctions-are-competitive" id="toc-q2-what-percentage-of-auctions-are-competitive" class="nav-link" data-scroll-target="#q2-what-percentage-of-auctions-are-competitive">Q2: What percentage of auctions are competitive?</a></li>
+  <li><a href="#q3-is-there-an-imbalance-problem" id="toc-q3-is-there-an-imbalance-problem" class="nav-link" data-scroll-target="#q3-is-there-an-imbalance-problem">Q3: Is there an imbalance problem?</a></li>
+  <li><a href="#q4-q7-model-accuracy-comparison" id="toc-q4-q7-model-accuracy-comparison" class="nav-link" data-scroll-target="#q4-q7-model-accuracy-comparison">Q4-Q7: Model Accuracy Comparison</a></li>
+  <li><a href="#q8-change-in-accuracy-between-with-and-without-closeprice" id="toc-q8-change-in-accuracy-between-with-and-without-closeprice" class="nav-link" data-scroll-target="#q8-change-in-accuracy-between-with-and-without-closeprice">Q8: Change in accuracy between with and without ClosePrice</a></li>
+  <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table">Summary Table</a></li>
+  </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a>
   <ul class="collapse">
   <li><a href="#advantages-of-removing-closeprice" id="toc-advantages-of-removing-closeprice" class="nav-link" data-scroll-target="#advantages-of-removing-closeprice">Advantages of Removing ClosePrice</a></li>
@@ -184,6 +193,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td style="text-align: left;"><a href="#part-d-class-balance-analysis">Part d: Class Balance</a></td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="#summary-of-key-findings">Key Findings</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"><a href="#conclusion">Conclusion</a></td>
 </tr>
 </tbody>
@@ -197,7 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="part-a-import-packages-and-load-data" class="level2">
 <h2 class="anchored" data-anchor-id="part-a-import-packages-and-load-data">Part a: Import Packages and Load Data</h2>
-<div id="3335e959" class="cell" data-execution_count="1">
+<div id="35160c46" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn <span class="im">as</span> sk</span>
@@ -221,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 First 5 rows of the dataset:</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="92">
+<div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 
 
@@ -304,7 +318,7 @@ First 5 rows of the dataset:</code></pre>
 </section>
 <section id="part-b-observe-variables-in-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="part-b-observe-variables-in-the-dataset">Part b: Observe Variables in the Dataset</h2>
-<div id="a6f7fedb" class="cell" data-execution_count="2">
+<div id="85bf7cdb" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Data Types ---"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ebay_df.dtypes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -320,13 +334,13 @@ Competitive       int64
 dtype: object</code></pre>
 </div>
 </div>
-<div id="5029d8ee" class="cell" data-execution_count="3">
+<div id="2e2f4001" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Summary Statistics ---"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ebay_df.describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Summary Statistics ---</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="94">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
@@ -412,7 +426,7 @@ dtype: object</code></pre>
 </div>
 </div>
 </div>
-<div id="e60f6e29" class="cell" data-execution_count="4">
+<div id="7065f018" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Info about the dataset ---"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ebay_df.info()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -439,7 +453,7 @@ memory usage: 123.4+ KB</code></pre>
 <h2 class="anchored" data-anchor-id="part-c-explore-categorical-variables-vs-competitive-auctions">Part c: Explore Categorical Variables vs Competitive Auctions</h2>
 <section id="category-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="category-analysis">Category Analysis</h3>
-<div id="0652f07f" class="cell" data-execution_count="5">
+<div id="bf5d8323" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Category ---"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>category_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'Category'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>category_competitive <span class="op">=</span> category_competitive.sort_values(<span class="st">'mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
@@ -475,14 +489,14 @@ Category with MOST competitive auctions: Photography (84.62% competitive rate)</
 </section>
 <section id="currency-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="currency-analysis">Currency Analysis</h3>
-<div id="fe75a7ba" class="cell" data-execution_count="6">
+<div id="cbaa5581" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Currency ---"</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>currency_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'currency'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>currency_competitive</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Competitive Auctions by Currency ---</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="97">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
@@ -524,7 +538,7 @@ Category with MOST competitive auctions: Photography (84.62% competitive rate)</
 </section>
 <section id="end-day-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="end-day-analysis">End Day Analysis</h3>
-<div id="449c2c28" class="cell" data-execution_count="7">
+<div id="cf40aef9" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by End Day ---"</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>endday_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'endDay'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>endday_competitive <span class="op">=</span> endday_competitive.sort_values(<span class="st">'mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
@@ -549,14 +563,14 @@ Day with MOST competitive auctions: Mon (67.34% competitive rate)</code></pre>
 </section>
 <section id="duration-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="duration-analysis">Duration Analysis</h3>
-<div id="4cedeb3c" class="cell" data-execution_count="8">
+<div id="2b12f2e7" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Competitive Auctions by Duration ---"</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>duration_competitive <span class="op">=</span> ebay_df.groupby(<span class="st">'Duration'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'mean'</span>, <span class="st">'count'</span>])</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>duration_competitive</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Competitive Auctions by Duration ---</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="99">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
@@ -610,7 +624,7 @@ Day with MOST competitive auctions: Mon (67.34% competitive rate)</code></pre>
 <section id="part-d-class-balance-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="part-d-class-balance-analysis">Part d: Class Balance Analysis</h2>
 <p>What percentage of auctions are competitive? Is there an imbalance problem?</p>
-<div id="59e6563c" class="cell" data-execution_count="9">
+<div id="f6288ffb" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>competitive_counts <span class="op">=</span> ebay_df.groupby(<span class="st">'Competitive'</span>)[<span class="st">'Competitive'</span>].agg([<span class="st">'count'</span>])</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Count of Competitive vs Non-Competitive Auctions ---"</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(competitive_counts)</span>
@@ -640,7 +654,7 @@ Non-competitive auctions: 45.94%
 ✓ The classes are relatively balanced.</code></pre>
 </div>
 </div>
-<div id="12689e35" class="cell" data-execution_count="10">
+<div id="b7264df0" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Violin plot: Distribution of OpenPrice by Competitive Status (outliers removed)</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove outliers using IQR method</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Q1 <span class="op">=</span> ebay_df[<span class="st">'OpenPrice'</span>].quantile(<span class="fl">0.25</span>)</span>
@@ -678,7 +692,7 @@ Non-competitive auctions: 45.94%
 </section>
 <section id="part-e-converting-variables-to-category-type" class="level2">
 <h2 class="anchored" data-anchor-id="part-e-converting-variables-to-category-type">Part e: Converting Variables to Category Type</h2>
-<div id="ec5bbaeb" class="cell" data-execution_count="11">
+<div id="ec9b990b" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a copy for modeling</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> ebay_df.copy()</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -706,7 +720,7 @@ dtype: object</code></pre>
 </section>
 <section id="part-f-creating-dummy-variables" class="level2">
 <h2 class="anchored" data-anchor-id="part-f-creating-dummy-variables">Part f: Creating Dummy Variables</h2>
-<div id="e83c43a9" class="cell" data-execution_count="12">
+<div id="1d11dfd8" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dummy variables (dtype=int for statsmodels compatibility)</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ebay_model <span class="op">=</span> pd.get_dummies(ebay_model, prefix_sep<span class="op">=</span><span class="st">'_'</span>, drop_first<span class="op">=</span><span class="va">False</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -720,7 +734,7 @@ Columns after creating dummies:
 ['sellerRating', 'Duration', 'ClosePrice', 'OpenPrice', 'Category_Antique/Art/Craft', 'Category_Automotive', 'Category_Books', 'Category_Business/Industrial', 'Category_Clothing/Accessories', 'Category_Coins/Stamps', 'Category_Collectibles', 'Category_Computer', 'Category_Electronics', 'Category_EverythingElse', 'Category_Health/Beauty', 'Category_Home/Garden', 'Category_Jewelry', 'Category_Music/Movie/Game', 'Category_Photography', 'Category_Pottery/Glass', 'Category_SportingGoods', 'Category_Toys/Hobbies', 'currency_EUR', 'currency_GBP', 'currency_US', 'endDay_Fri', 'endDay_Mon', 'endDay_Sat', 'endDay_Sun', 'endDay_Thu', 'endDay_Tue', 'endDay_Wed', 'Competitive_0', 'Competitive_1']</code></pre>
 </div>
 </div>
-<div id="e06c1dd6" class="cell" data-execution_count="13">
+<div id="b051e4ba" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop reference categories (first category for each variable)</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Category_Automotive, currency_EUR, endDay_Mon</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>columns_to_drop <span class="op">=</span> [<span class="st">'Category_Automotive'</span>, <span class="st">'currency_EUR'</span>, <span class="st">'endDay_Mon'</span>, </span>
@@ -747,7 +761,7 @@ Final columns for modeling:
 </section>
 <section id="part-g-outlier-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="part-g-outlier-analysis">Part g: Outlier Analysis</h2>
-<div id="c8128dd9" class="cell" data-execution_count="14">
+<div id="105d033d" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify outliers using IQR method for numerical columns (but keep them in the dataset)</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>numerical_cols <span class="op">=</span> [<span class="st">'OpenPrice'</span>, <span class="st">'ClosePrice'</span>, <span class="st">'sellerRating'</span>]</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -779,7 +793,7 @@ Outlier detection using IQR method:
 </section>
 <section id="part-h-data-partitioning-60-train-40-test" class="level2">
 <h2 class="anchored" data-anchor-id="part-h-data-partitioning-60-train-40-test">Part h: Data Partitioning (60% Train / 40% Test)</h2>
-<div id="4c655a48" class="cell" data-execution_count="15">
+<div id="a0d45e83" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define X (features) and y (target)</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert y to int to ensure compatibility with statsmodels</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> ebay_model[<span class="st">'Competitive'</span>].astype(<span class="bu">int</span>)</span>
@@ -800,7 +814,7 @@ Test set size: 789 (40.0%)</code></pre>
 </section>
 <section id="modeling-part-1-logistic-regression-with-all-variables" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-part-1-logistic-regression-with-all-variables">Modeling Part 1: Logistic Regression with ALL Variables</h2>
-<div id="45c71e25" class="cell" data-execution_count="16">
+<div id="5322e420" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using statsmodels for detailed output</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>X_train_const <span class="op">=</span> sm.add_constant(X_train)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>X_test_const <span class="op">=</span> sm.add_constant(X_test)</span>
@@ -819,7 +833,7 @@ Dep. Variable:            Competitive   No. Observations:                 1183
 Model:                          Logit   Df Residuals:                     1153
 Method:                           MLE   Df Model:                           29
 Date:                Sun, 11 Jan 2026   Pseudo R-squ.:               -0.004879
-Time:                        12:57:48   Log-Likelihood:                -819.99
+Time:                        13:04:52   Log-Likelihood:                -819.99
 converged:                      False   LL-Null:                       -816.01
 Covariance Type:            nonrobust   LLR p-value:                     1.000
 =================================================================================================
@@ -858,12 +872,12 @@ endDay_Wed                             0      0.341          0      1.000      -
 =================================================================================================</code></pre>
 </div>
 </div>
-<div id="ff6bc7a8" class="cell" data-execution_count="17">
+<div id="8181a325" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using sklearn for predictions</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>lr_model <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">202</span>)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>lr_model.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="108">
-<style>#sk-container-id-4 {
+<div class="cell-output cell-output-display" data-execution_count="17">
+<style>#sk-container-id-1 {
   /* Definition of color scheme common for light and dark mode */
   --sklearn-color-text: #000;
   --sklearn-color-text-muted: #666;
@@ -894,15 +908,15 @@ endDay_Wed                             0      0.341          0      1.000      -
   }
 }
 
-#sk-container-id-4 {
+#sk-container-id-1 {
   color: var(--sklearn-color-text);
 }
 
-#sk-container-id-4 pre {
+#sk-container-id-1 pre {
   padding: 0;
 }
 
-#sk-container-id-4 input.sk-hidden--visually {
+#sk-container-id-1 input.sk-hidden--visually {
   border: 0;
   clip: rect(1px 1px 1px 1px);
   clip: rect(1px, 1px, 1px, 1px);
@@ -914,7 +928,7 @@ endDay_Wed                             0      0.341          0      1.000      -
   width: 1px;
 }
 
-#sk-container-id-4 div.sk-dashed-wrapped {
+#sk-container-id-1 div.sk-dashed-wrapped {
   border: 1px dashed var(--sklearn-color-line);
   margin: 0 0.4em 0.5em 0.4em;
   box-sizing: border-box;
@@ -922,7 +936,7 @@ endDay_Wed                             0      0.341          0      1.000      -
   background-color: var(--sklearn-color-background);
 }
 
-#sk-container-id-4 div.sk-container {
+#sk-container-id-1 div.sk-container {
   /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
      but bootstrap.min.css set `[hidden] { display: none !important; }`
      so we also need the `!important` here to be able to override the
@@ -932,7 +946,7 @@ endDay_Wed                             0      0.341          0      1.000      -
   position: relative;
 }
 
-#sk-container-id-4 div.sk-text-repr-fallback {
+#sk-container-id-1 div.sk-text-repr-fallback {
   display: none;
 }
 
@@ -948,14 +962,14 @@ div.sk-item {
 
 /* Parallel-specific style estimator block */
 
-#sk-container-id-4 div.sk-parallel-item::after {
+#sk-container-id-1 div.sk-parallel-item::after {
   content: "";
   width: 100%;
   border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
   flex-grow: 1;
 }
 
-#sk-container-id-4 div.sk-parallel {
+#sk-container-id-1 div.sk-parallel {
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -963,28 +977,28 @@ div.sk-item {
   position: relative;
 }
 
-#sk-container-id-4 div.sk-parallel-item {
+#sk-container-id-1 div.sk-parallel-item {
   display: flex;
   flex-direction: column;
 }
 
-#sk-container-id-4 div.sk-parallel-item:first-child::after {
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
   align-self: flex-end;
   width: 50%;
 }
 
-#sk-container-id-4 div.sk-parallel-item:last-child::after {
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
   align-self: flex-start;
   width: 50%;
 }
 
-#sk-container-id-4 div.sk-parallel-item:only-child::after {
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
   width: 0;
 }
 
 /* Serial-specific style estimator block */
 
-#sk-container-id-4 div.sk-serial {
+#sk-container-id-1 div.sk-serial {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1002,14 +1016,14 @@ clickable and can be expanded/collapsed.
 
 /* Pipeline and ColumnTransformer style (default) */
 
-#sk-container-id-4 div.sk-toggleable {
+#sk-container-id-1 div.sk-toggleable {
   /* Default theme specific background. It is overwritten whether we have a
   specific estimator or a Pipeline/ColumnTransformer */
   background-color: var(--sklearn-color-background);
 }
 
 /* Toggleable label */
-#sk-container-id-4 label.sk-toggleable__label {
+#sk-container-id-1 label.sk-toggleable__label {
   cursor: pointer;
   display: flex;
   width: 100%;
@@ -1022,13 +1036,13 @@ clickable and can be expanded/collapsed.
   gap: 0.5em;
 }
 
-#sk-container-id-4 label.sk-toggleable__label .caption {
+#sk-container-id-1 label.sk-toggleable__label .caption {
   font-size: 0.6rem;
   font-weight: lighter;
   color: var(--sklearn-color-text-muted);
 }
 
-#sk-container-id-4 label.sk-toggleable__label-arrow:before {
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
   /* Arrow on the left of the label */
   content: "▸";
   float: left;
@@ -1036,25 +1050,25 @@ clickable and can be expanded/collapsed.
   color: var(--sklearn-color-icon);
 }
 
-#sk-container-id-4 label.sk-toggleable__label-arrow:hover:before {
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
   color: var(--sklearn-color-text);
 }
 
 /* Toggleable content - dropdown */
 
-#sk-container-id-4 div.sk-toggleable__content {
+#sk-container-id-1 div.sk-toggleable__content {
   display: none;
   text-align: left;
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-4 div.sk-toggleable__content.fitted {
+#sk-container-id-1 div.sk-toggleable__content.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-4 div.sk-toggleable__content pre {
+#sk-container-id-1 div.sk-toggleable__content pre {
   margin: 0.2em;
   border-radius: 0.25em;
   color: var(--sklearn-color-text);
@@ -1062,79 +1076,79 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-4 div.sk-toggleable__content.fitted pre {
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
   /* unfitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-4 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
   /* Expand drop-down */
   display: block;
   width: 100%;
   overflow: visible;
 }
 
-#sk-container-id-4 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
   content: "▾";
 }
 
 /* Pipeline/ColumnTransformer-specific style */
 
-#sk-container-id-4 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-4 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator-specific style */
 
 /* Colorize estimator box */
-#sk-container-id-4 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-4 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
-#sk-container-id-4 div.sk-label label.sk-toggleable__label,
-#sk-container-id-4 div.sk-label label {
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
   /* The background is the default theme color */
   color: var(--sklearn-color-text-on-default-background);
 }
 
 /* On hover, darken the color of the background */
-#sk-container-id-4 div.sk-label:hover label.sk-toggleable__label {
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
 /* Label box, darken color on hover, fitted */
-#sk-container-id-4 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator label */
 
-#sk-container-id-4 div.sk-label label {
+#sk-container-id-1 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
   display: inline-block;
   line-height: 1.2em;
 }
 
-#sk-container-id-4 div.sk-label-container {
+#sk-container-id-1 div.sk-label-container {
   text-align: center;
 }
 
 /* Estimator-specific */
-#sk-container-id-4 div.sk-estimator {
+#sk-container-id-1 div.sk-estimator {
   font-family: monospace;
   border: 1px dotted var(--sklearn-color-border-box);
   border-radius: 0.25em;
@@ -1144,18 +1158,18 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-4 div.sk-estimator.fitted {
+#sk-container-id-1 div.sk-estimator.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
 /* on hover */
-#sk-container-id-4 div.sk-estimator:hover {
+#sk-container-id-1 div.sk-estimator:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-4 div.sk-estimator.fitted:hover {
+#sk-container-id-1 div.sk-estimator.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
@@ -1243,7 +1257,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 /* "?"-specific style due to the `<a>` HTML tag */
 
-#sk-container-id-4 a.estimator_doc_link {
+#sk-container-id-1 a.estimator_doc_link {
   float: right;
   font-size: 1rem;
   line-height: 1em;
@@ -1258,21 +1272,21 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   border: var(--sklearn-color-unfitted-level-1) 1pt solid;
 }
 
-#sk-container-id-4 a.estimator_doc_link.fitted {
+#sk-container-id-1 a.estimator_doc_link.fitted {
   /* fitted */
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
 
 /* On hover */
-#sk-container-id-4 a.estimator_doc_link:hover {
+#sk-container-id-1 a.estimator_doc_link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
   color: var(--sklearn-color-background);
   text-decoration: none;
 }
 
-#sk-container-id-4 a.estimator_doc_link.fitted:hover {
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
@@ -1340,7 +1354,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     height: 14px;
     cursor: pointer;
 }
-</style><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression(max_iter=1000, random_state=202)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked=""><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LogisticRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression(max_iter=1000, random_state=202)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked=""><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LogisticRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1475,7 +1489,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </section>
 <section id="modeling-part-2-confusion-matrix-and-accuracy" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-part-2-confusion-matrix-and-accuracy">Modeling Part 2: Confusion Matrix and Accuracy</h2>
-<div id="0feeeeda" class="cell" data-execution_count="18">
+<div id="e81bd2c0" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions on test set</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> lr_model.predict(X_test)</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1500,7 +1514,7 @@ Actual 0       293      70
 Accuracy: 0.7757 (77.57%)</code></pre>
 </div>
 </div>
-<div id="640fc2d9" class="cell" data-execution_count="19">
+<div id="68835213" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix Plot</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, </span>
@@ -1520,7 +1534,7 @@ Accuracy: 0.7757 (77.57%)</code></pre>
 </div>
 </div>
 </div>
-<div id="db5d6f75" class="cell" data-execution_count="20">
+<div id="d8508c83" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Classification Report ---"</span>)</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1553,7 +1567,7 @@ weighted avg       0.78      0.78      0.78       789
 </section>
 <section id="modeling-part-4-model-without-closeprice" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-part-4-model-without-closeprice">Modeling Part 4: Model WITHOUT ClosePrice</h2>
-<div id="b8c6657a" class="cell" data-execution_count="21">
+<div id="38225464" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove ClosePrice from features</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>X_no_close <span class="op">=</span> X.drop(columns<span class="op">=</span>[<span class="st">'ClosePrice'</span>])</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1569,7 +1583,7 @@ weighted avg       0.78      0.78      0.78       789
 <span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions</span></span>
 <span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>y_pred_nc <span class="op">=</span> lr_model_nc.predict(X_test_nc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="57fa0283" class="cell" data-execution_count="22">
+<div id="5f6ebc2e" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>cm_nc <span class="op">=</span> confusion_matrix(y_test_nc, y_pred_nc)</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Confusion Matrix WITHOUT ClosePrice ---"</span>)</span>
@@ -1591,7 +1605,7 @@ Actual 0       209     154
 Accuracy WITHOUT ClosePrice: 0.6401 (64.01%)</code></pre>
 </div>
 </div>
-<div id="315da96f" class="cell" data-execution_count="23">
+<div id="0fb2b4fe" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix Plot (Without ClosePrice)</span></span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm_nc, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Oranges'</span>, </span>
@@ -1611,7 +1625,7 @@ Accuracy WITHOUT ClosePrice: 0.6401 (64.01%)</code></pre>
 </div>
 </div>
 </div>
-<div id="5e675c49" class="cell" data-execution_count="24">
+<div id="7e953b61" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change in accuracy</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>accuracy_change <span class="op">=</span> accuracy_nc <span class="op">-</span> accuracy</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"--- Comparison ---"</span>)</span>
@@ -1636,7 +1650,7 @@ Change in Accuracy:          -0.1356 (-13.56%)
    but for practical predictions, the model without ClosePrice is more appropriate.</code></pre>
 </div>
 </div>
-<div id="b5868d6f" class="cell" data-execution_count="25">
+<div id="856f29a4" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report for model without ClosePrice</span></span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Classification Report (Without ClosePrice) ---"</span>)</span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test_nc, y_pred_nc))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1653,7 +1667,7 @@ weighted avg       0.64      0.64      0.64       789
 </code></pre>
 </div>
 </div>
-<div id="1efc1d51" class="cell" data-execution_count="26">
+<div id="6b3f01fd" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Statsmodels summary for the model without ClosePrice</span></span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Logistic Regression Summary (Without ClosePrice) ---"</span>)</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>X_train_nc_const <span class="op">=</span> sm.add_constant(X_train_nc)</span>
@@ -1668,7 +1682,7 @@ Dep. Variable:            Competitive   No. Observations:                 1183
 Model:                          Logit   Df Residuals:                     1154
 Method:                           MLE   Df Model:                           28
 Date:                Sun, 11 Jan 2026   Pseudo R-squ.:               -0.004879
-Time:                        12:57:50   Log-Likelihood:                -819.99
+Time:                        13:04:53   Log-Likelihood:                -819.99
 converged:                      False   LL-Null:                       -816.01
 Covariance Type:            nonrobust   LLR p-value:                     1.000
 =================================================================================================
@@ -1706,6 +1720,262 @@ endDay_Wed                             0      0.340          0      1.000      -
 =================================================================================================</code></pre>
 </div>
 </div>
+</section>
+<section id="summary-of-key-findings" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-key-findings">Summary of Key Findings</h2>
+<p>This section summarizes the key findings from our analysis by answering the critical questions about eBay auction competitiveness.</p>
+<div id="0e4a41b8" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate training accuracies (not just validation)</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Model WITH ClosePrice - Training Accuracy</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> lr_model.predict(X_train)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>train_accuracy_with_close <span class="op">=</span> accuracy_score(y_train, y_train_pred)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Model WITHOUT ClosePrice - Training Accuracy  </span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>y_train_pred_nc <span class="op">=</span> lr_model_nc.predict(X_train_nc)</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>train_accuracy_without_close <span class="op">=</span> accuracy_score(y_train_nc, y_train_pred_nc)</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Store validation accuracies (already calculated)</span></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>val_accuracy_with_close <span class="op">=</span> accuracy</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>val_accuracy_without_close <span class="op">=</span> accuracy_nc</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"SUMMARY OF KEY FINDINGS"</span>)</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>======================================================================
+SUMMARY OF KEY FINDINGS
+======================================================================</code></pre>
+</div>
+</div>
+<section id="q1-which-category-has-the-most-competitive-auctions-which-day-of-week" class="level3">
+<h3 class="anchored" data-anchor-id="q1-which-category-has-the-most-competitive-auctions-which-day-of-week">Q1: Which category has the most competitive auctions? Which day of week?</h3>
+<div id="8a2eccf8" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Category with most competitive auctions</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 CATEGORY ANALYSIS:"</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Category with MOST competitive auctions: </span><span class="sc">{</span>category_competitive[<span class="st">'mean'</span>]<span class="sc">.</span>idxmax()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Competitive Rate: </span><span class="sc">{</span>category_competitive[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2%}</span><span class="ss">"</span>)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Day of week with most competitive auctions</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📅 DAY OF WEEK ANALYSIS:"</span>)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Day with MOST competitive auctions: </span><span class="sc">{</span>endday_competitive[<span class="st">'mean'</span>]<span class="sc">.</span>idxmax()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Competitive Rate: </span><span class="sc">{</span>endday_competitive[<span class="st">'mean'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2%}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 CATEGORY ANALYSIS:
+   Category with MOST competitive auctions: Photography
+   Competitive Rate: 84.62%
+
+📅 DAY OF WEEK ANALYSIS:
+   Day with MOST competitive auctions: Mon
+   Competitive Rate: 67.34%</code></pre>
+</div>
+</div>
+</section>
+<section id="q2-what-percentage-of-auctions-are-competitive" class="level3">
+<h3 class="anchored" data-anchor-id="q2-what-percentage-of-auctions-are-competitive">Q2: What percentage of auctions are competitive?</h3>
+<div id="97dd37aa" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>total_auctions <span class="op">=</span> <span class="bu">len</span>(ebay_df)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>competitive_auctions <span class="op">=</span> ebay_df[<span class="st">'Competitive'</span>].<span class="bu">sum</span>()</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>competitive_percentage <span class="op">=</span> (competitive_auctions <span class="op">/</span> total_auctions) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📈 COMPETITIVE AUCTION PERCENTAGE:"</span>)</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Total Auctions: </span><span class="sc">{</span>total_auctions<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Competitive Auctions: </span><span class="sc">{</span>competitive_auctions<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Percentage Competitive: </span><span class="sc">{</span>competitive_percentage<span class="sc">:.2f}</span><span class="ss">%"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📈 COMPETITIVE AUCTION PERCENTAGE:
+   Total Auctions: 1972
+   Competitive Auctions: 1066
+   Percentage Competitive: 54.06%</code></pre>
+</div>
+</div>
+</section>
+<section id="q3-is-there-an-imbalance-problem" class="level3">
+<h3 class="anchored" data-anchor-id="q3-is-there-an-imbalance-problem">Q3: Is there an imbalance problem?</h3>
+<div id="15821252" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"⚖️ CLASS IMBALANCE ANALYSIS:"</span>)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Competitive: </span><span class="sc">{</span>competitive_percentage<span class="sc">:.2f}</span><span class="ss">%"</span>)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Non-Competitive: </span><span class="sc">{</span><span class="dv">100</span> <span class="op">-</span> competitive_percentage<span class="sc">:.2f}</span><span class="ss">%"</span>)</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for imbalance (typically if minority class &lt; 40% or &gt; 60%)</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> competitive_percentage <span class="op">&lt;</span> <span class="dv">40</span> <span class="kw">or</span> competitive_percentage <span class="op">&gt;</span> <span class="dv">60</span>:</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   ⚠️  YES - There IS an imbalance problem."</span>)</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   The classes are not evenly balanced (</span><span class="sc">{</span>competitive_percentage<span class="sc">:.1f}</span><span class="ss">% vs </span><span class="sc">{</span><span class="dv">100</span><span class="op">-</span>competitive_percentage<span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   This could affect model performance, particularly for the minority class."</span>)</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   ✓ NO - The classes are relatively balanced."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>⚖️ CLASS IMBALANCE ANALYSIS:
+   Competitive: 54.06%
+   Non-Competitive: 45.94%
+
+   ✓ NO - The classes are relatively balanced.</code></pre>
+</div>
+</div>
+</section>
+<section id="q4-q7-model-accuracy-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="q4-q7-model-accuracy-comparison">Q4-Q7: Model Accuracy Comparison</h3>
+<div id="fa575441" class="cell" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🎯 MODEL ACCURACY SUMMARY:"</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"WITH ClosePrice:"</span>)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Q4. Training Accuracy:   </span><span class="sc">{</span>train_accuracy_with_close<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>train_accuracy_with_close<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Q5. Validation Accuracy: </span><span class="sc">{</span>val_accuracy_with_close<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>val_accuracy_with_close<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"WITHOUT ClosePrice:"</span>)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Q6. Training Accuracy:   </span><span class="sc">{</span>train_accuracy_without_close<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>train_accuracy_without_close<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Q7. Validation Accuracy: </span><span class="sc">{</span>val_accuracy_without_close<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>val_accuracy_without_close<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>🎯 MODEL ACCURACY SUMMARY:
+--------------------------------------------------
+
+WITH ClosePrice:
+   Q4. Training Accuracy:   0.7861 (78.61%)
+   Q5. Validation Accuracy: 0.7757 (77.57%)
+
+WITHOUT ClosePrice:
+   Q6. Training Accuracy:   0.6636 (66.36%)
+   Q7. Validation Accuracy: 0.6401 (64.01%)</code></pre>
+</div>
+</div>
+</section>
+<section id="q8-change-in-accuracy-between-with-and-without-closeprice" class="level3">
+<h3 class="anchored" data-anchor-id="q8-change-in-accuracy-between-with-and-without-closeprice">Q8: Change in accuracy between with and without ClosePrice</h3>
+<div id="7a0477c8" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>train_accuracy_change <span class="op">=</span> train_accuracy_without_close <span class="op">-</span> train_accuracy_with_close</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>val_accuracy_change <span class="op">=</span> val_accuracy_without_close <span class="op">-</span> val_accuracy_with_close</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📉 ACCURACY CHANGE (Without ClosePrice - With ClosePrice):"</span>)</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Training Accuracy Change:   </span><span class="sc">{</span>train_accuracy_change<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>train_accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Validation Accuracy Change: </span><span class="sc">{</span>val_accuracy_change<span class="sc">:.4f}</span><span class="ss"> (</span><span class="sc">{</span>val_accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%)"</span>)</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> val_accuracy_change <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   ⚠️  Removing ClosePrice DECREASED validation accuracy by </span><span class="sc">{</span><span class="bu">abs</span>(val_accuracy_change)<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>)</span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   However, this is the more appropriate model for real-world predictions"</span>)</span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"   since ClosePrice is not available before the auction ends."</span>)</span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   ✓ Removing ClosePrice changed validation accuracy by </span><span class="sc">{</span>val_accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📉 ACCURACY CHANGE (Without ClosePrice - With ClosePrice):
+--------------------------------------------------
+   Training Accuracy Change:   -0.1226 (-12.26%)
+   Validation Accuracy Change: -0.1356 (-13.56%)
+
+   ⚠️  Removing ClosePrice DECREASED validation accuracy by 13.56%
+   However, this is the more appropriate model for real-world predictions
+   since ClosePrice is not available before the auction ends.</code></pre>
+</div>
+</div>
+</section>
+<section id="summary-table" class="level3">
+<h3 class="anchored" data-anchor-id="summary-table">Summary Table</h3>
+<div id="f195f42e" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a summary DataFrame</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>summary_data <span class="op">=</span> {</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Metric'</span>: [</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Most Competitive Category'</span>,</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Most Competitive Day'</span>,</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Competitive Auction %'</span>,</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Imbalance Problem?'</span>,</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Training Accuracy (with ClosePrice)'</span>,</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Validation Accuracy (with ClosePrice)'</span>,</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Training Accuracy (without ClosePrice)'</span>,</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Validation Accuracy (without ClosePrice)'</span>,</span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Validation Accuracy Change'</span></span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Value'</span>: [</span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a>        category_competitive[<span class="st">'mean'</span>].idxmax(),</span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>        endday_competitive[<span class="st">'mean'</span>].idxmax(),</span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>competitive_percentage<span class="sc">:.2f}</span><span class="ss">%"</span>,</span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Yes"</span> <span class="cf">if</span> (competitive_percentage <span class="op">&lt;</span> <span class="dv">40</span> <span class="kw">or</span> competitive_percentage <span class="op">&gt;</span> <span class="dv">60</span>) <span class="cf">else</span> <span class="st">"No"</span>,</span>
+<span id="cb61-19"><a href="#cb61-19" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>train_accuracy_with_close<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>,</span>
+<span id="cb61-20"><a href="#cb61-20" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>val_accuracy_with_close<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>,</span>
+<span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>train_accuracy_without_close<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>,</span>
+<span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>val_accuracy_without_close<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>,</span>
+<span id="cb61-23"><a href="#cb61-23" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>val_accuracy_change<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span></span>
+<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb61-25"><a href="#cb61-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb61-26"><a href="#cb61-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-27"><a href="#cb61-27" aria-hidden="true" tabindex="-1"></a>summary_df <span class="op">=</span> pd.DataFrame(summary_data)</span>
+<span id="cb61-28"><a href="#cb61-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
+<span id="cb61-29"><a href="#cb61-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"COMPLETE SUMMARY TABLE"</span>)</span>
+<span id="cb61-30"><a href="#cb61-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
+<span id="cb61-31"><a href="#cb61-31" aria-hidden="true" tabindex="-1"></a>summary_df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+======================================================================
+COMPLETE SUMMARY TABLE
+======================================================================</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Metric</th>
+<th data-quarto-table-cell-role="th">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Most Competitive Category</td>
+<td>Photography</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Most Competitive Day</td>
+<td>Mon</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Competitive Auction %</td>
+<td>54.06%</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Imbalance Problem?</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Training Accuracy (with ClosePrice)</td>
+<td>78.61%</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>Validation Accuracy (with ClosePrice)</td>
+<td>77.57%</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>Training Accuracy (without ClosePrice)</td>
+<td>66.36%</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>Validation Accuracy (without ClosePrice)</td>
+<td>64.01%</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">8</th>
+<td>Validation Accuracy Change</td>
+<td>-13.56%</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<hr>
+</section>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
