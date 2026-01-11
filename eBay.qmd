@@ -1,0 +1,63 @@
+---
+title: "eBay Auction"
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+Business Problem: The file eBayAuctions.csv contains information on 1972 auctions transacted on
+eBay.com during May-June 2004. The goal is to use these data to build a model that will distinguish
+competitive auctions from noncompetitive ones. A competitive auction is defined as an auction with at
+least two bids placed on the item being auctioned. The data include variables that describe the item
+(auction category), the seller (his or her eBay rating), and the auction terms that the seller selected
+(auction duration, opening price, currency, day of week of auction close). In addition, we have the price
+at which the auction closed. The goal is to predict whether or not an auction of interest will be
+competitive.
+Data preprocessing. Create dummy variables for the categorical predictors. These include Category (18
+categories), Currency (USD, GBP, Euro), EndDay (Monday-Sunday), and Duration (1, 3, 5, 7, or 10 days).
+Data Dictionary
+Variable Description
+Category Category of Auction
+Currency Primary Currency of Auction
+sellerRating Total rating of the seller
+Duration Length of Auction
+endDay Day of week the auction ends
+ClosePrice Final selling price of the auction
+OpenPrice Opening bid requirement for the auction
+Competitive (Target) Was auction competitive (2 or more bids)
+Data Preparation
+a. Import your data (ebayAuctions.csv) into python and ensure the following packages are loaded
+• import numpy as np
+• import pandas as pd
+• import sklearn as sk
+• from sklearn.model_selection import train_test_split
+• import statsmodels.api as sm
+• from sklearn.metrics import accuracy_score
+b. Observe the variables in the data set. Note their variable type (binary, ordinal, continuous,
+string).
+Hint: Use functions such as describe(), dtypes,
+c. Explore the category, currency, endDay and duration variables with respect to competitive
+auctions. Which category has the most competitive auctions? Which day of week?
+Hint Code: # pivot table of Competitive and Category
+ebay_df.groupby('Category')['Competitive'].agg(['mean'])
+d. What percentage of the auctions are competitive? Is there an imbalance problem?
+Hint Code: # count of competitive Auctions
+ebay_df.groupby('Competitive')['Competitive'].agg(['count'])
+e. Change variable types for (Currency, endDay, Category, and Cometitive) from objects to
+category for modeling
+Hint: ebay_df['currency'] = ebay_df['currency'].astype('category')
+f. Create dummy variables for these categories and rop the first reference
+Hint Code:
+ebay_df = pd.get_dummies(ebay_df, prefix_sep='_')
+ebay_df.drop(columns=['Category_Automotive', 'currency_EUR', 'endDay_Mon'], inplace=True)
+g. Partition the data into 60% training 40% hold out with a set.seed(202)
+Hint: Use train_test_split from class example
+Modeling
+1. Construct a logistic regression with all the variables available
+Competitive = Category_New + currency + sellerRating + Duration + OpenPrice +
+ClosePrice + endDay (note I don’t list all the categories)
+2. Create a confusion matrix with the predictions using the validation data set. What is the
+accuracy of the model?
+3. What is the challenge of using ClosePrice to predict if an auction will be competitive?
+4. Create a new model without ClosePrice and a confusion matrix. What is the change in accuracy?
