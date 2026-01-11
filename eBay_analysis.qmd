@@ -23,6 +23,7 @@ jupyter: python3
 | [Part b: Observe Variables](#part-b-observe-variables-in-the-dataset) | [Part g: Outlier Analysis](#part-g-outlier-analysis) | [Model 3: ClosePrice Challenge](#modeling-part-3-challenge-of-using-closeprice) |
 | [Part c: Categorical Analysis](#part-c-explore-categorical-variables-vs-competitive-auctions) | [Part h: Data Partitioning](#part-h-data-partitioning-60-train-40-test) | [Model 4: Without ClosePrice](#modeling-part-4-model-without-closeprice) |
 | [Part d: Class Balance](#part-d-class-balance-analysis) | | [Key Findings](#summary-of-key-findings) |
+| | | [**Summary Answers**](#summary-answers-to-questions) |
 | | | [Conclusion](#conclusion) |
 
 ---
@@ -536,6 +537,95 @@ print("COMPLETE SUMMARY TABLE")
 print("=" * 70)
 summary_df
 ```
+
+---
+
+## Summary Answers to Questions
+
+```{python}
+#| echo: false
+
+# Create comprehensive summary answers
+print("=" * 75)
+print("SUMMARY ANSWERS TO ALL QUESTIONS")
+print("=" * 75)
+print()
+
+# Question A/B
+print("PART A & B: DATA LOADING AND OBSERVATION")
+print("-" * 75)
+print(f"• Dataset contains {len(ebay_df):,} auction records with {ebay_df.shape[1]} variables")
+print(f"• Variables include: {', '.join(ebay_df.columns[:5].tolist())}...")
+print()
+
+# Question C
+print("PART C: CATEGORICAL VARIABLE ANALYSIS")
+print("-" * 75)
+print(f"• Category with MOST competitive auctions: {category_competitive['mean'].idxmax()} ({category_competitive['mean'].max():.2%})")
+print(f"• Day with MOST competitive auctions: {endday_competitive['mean'].idxmax()} ({endday_competitive['mean'].max():.2%})")
+print()
+
+# Question D
+print("PART D: CLASS BALANCE ANALYSIS")
+print("-" * 75)
+print(f"• Percentage of competitive auctions: {competitive_percentage:.2f}%")
+print(f"• Percentage of non-competitive auctions: {100 - competitive_percentage:.2f}%")
+imbalance = "YES" if (competitive_percentage < 40 or competitive_percentage > 60) else "NO"
+print(f"• Is there an imbalance problem? {imbalance}")
+print()
+
+# Questions E-H (Data Preparation)
+print("PARTS E-H: DATA PREPARATION")
+print("-" * 75)
+print(f"• Variables converted to category type: currency, endDay, Category, Competitive")
+print(f"• Dummy variables created for categorical predictors")
+print(f"• Reference categories dropped: Category_Automotive, currency_EUR, endDay_Mon")
+print(f"• Training set size: {len(X_train)} (60%)")
+print(f"• Test set size: {len(X_test)} (40%)")
+print()
+
+# Model Accuracies
+print("MODEL ACCURACY RESULTS")
+print("-" * 75)
+print("Model WITH ClosePrice:")
+print(f"   • Training Accuracy:   {train_accuracy_with_close:.4f} ({train_accuracy_with_close*100:.2f}%)")
+print(f"   • Validation Accuracy: {val_accuracy_with_close:.4f} ({val_accuracy_with_close*100:.2f}%)")
+print()
+print("Model WITHOUT ClosePrice:")
+print(f"   • Training Accuracy:   {train_accuracy_without_close:.4f} ({train_accuracy_without_close*100:.2f}%)")
+print(f"   • Validation Accuracy: {val_accuracy_without_close:.4f} ({val_accuracy_without_close*100:.2f}%)")
+print()
+
+# Change in Accuracy
+print("CHANGE IN ACCURACY (After Removing ClosePrice)")
+print("-" * 75)
+print(f"   • Training Accuracy Change:   {train_accuracy_change:+.4f} ({train_accuracy_change*100:+.2f}%)")
+print(f"   • Validation Accuracy Change: {val_accuracy_change:+.4f} ({val_accuracy_change*100:+.2f}%)")
+print()
+
+# ClosePrice Challenge
+print("CHALLENGE OF USING CLOSEPRICE")
+print("-" * 75)
+print("   ClosePrice creates DATA LEAKAGE because:")
+print("   1. ClosePrice is only known AFTER the auction ends")
+print("   2. Competitive bidding CAUSES higher close prices (reversed causality)")
+print("   3. Cannot be used for predictions on NEW/upcoming auctions")
+print()
+
+print("=" * 75)
+```
+
+| Question | Answer |
+|:---------|:-------|
+| **Most competitive category?** | `{python} category_competitive['mean'].idxmax()` |
+| **Most competitive day?** | `{python} endday_competitive['mean'].idxmax()` |
+| **% of auctions competitive?** | `{python} f"{competitive_percentage:.2f}%"` |
+| **Imbalance problem?** | `{python} "Yes" if (competitive_percentage < 40 or competitive_percentage > 60) else "No"` |
+| **Training accuracy (with ClosePrice)?** | `{python} f"{train_accuracy_with_close*100:.2f}%"` |
+| **Validation accuracy (with ClosePrice)?** | `{python} f"{val_accuracy_with_close*100:.2f}%"` |
+| **Training accuracy (without ClosePrice)?** | `{python} f"{train_accuracy_without_close*100:.2f}%"` |
+| **Validation accuracy (without ClosePrice)?** | `{python} f"{val_accuracy_without_close*100:.2f}%"` |
+| **Accuracy change after removing ClosePrice?** | `{python} f"{val_accuracy_change*100:+.2f}%"` |
 
 ---
 
