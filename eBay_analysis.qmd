@@ -195,7 +195,38 @@ print("\nFinal columns for modeling:")
 print(ebay_model.columns.tolist())
 ```
 
-## Part g: Data Partitioning (60% Train / 40% Test)
+## Part g: Removing Outliers
+
+```{python}
+# Remove outliers using IQR method for numerical columns
+numerical_cols = ['OpenPrice', 'ClosePrice', 'sellerRating']
+
+print(f"Dataset size before removing outliers: {len(ebay_model)}")
+
+# Create a mask for non-outliers
+outlier_mask = pd.Series([True] * len(ebay_model))
+
+for col in numerical_cols:
+    Q1 = ebay_model[col].quantile(0.25)
+    Q3 = ebay_model[col].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    
+    col_mask = (ebay_model[col] >= lower_bound) & (ebay_model[col] <= upper_bound)
+    outliers_in_col = (~col_mask).sum()
+    print(f"  {col}: {outliers_in_col} outliers (range: {lower_bound:.2f} to {upper_bound:.2f})")
+    
+    outlier_mask = outlier_mask & col_mask
+
+# Apply the mask to remove outliers
+ebay_model = ebay_model[outlier_mask].copy()
+
+print(f"\nDataset size after removing outliers: {len(ebay_model)}")
+print(f"Total records removed: {(~outlier_mask).sum()}")
+```
+
+## Part h: Data Partitioning (60% Train / 40% Test)
 
 ```{python}
 # Define X (features) and y (target)
