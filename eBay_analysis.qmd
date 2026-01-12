@@ -23,7 +23,7 @@ jupyter: python3
 | [Part b: Observe Variables](#part-b-observe-variables-in-the-dataset) | [Part g: Outlier Analysis](#part-g-outlier-analysis) | [Model 3: ClosePrice Challenge](#modeling-part-3-challenge-of-using-closeprice) |
 | [Part c: Categorical Analysis](#part-c-explore-categorical-variables-vs-competitive-auctions) | [Part h: Data Partitioning](#part-h-data-partitioning-60-train-40-test) | [Model 4: Without ClosePrice](#modeling-part-4-model-without-closeprice) |
 | [Part d: Class Balance](#part-d-class-balance-analysis) | | [Key Findings](#summary-of-key-findings) |
-| | | [**Summary Answers**](#summary-answers-to-questions) |
+| [Part d2: Opening Price Distribution](#part-d2-opening-price-distribution-analysis) | | [**Summary Answers**](#summary-answers-to-questions) |
 | | | [Conclusion](#conclusion) |
 
 ---
@@ -161,6 +161,154 @@ plt.ylabel('Opening Price ($)', fontsize=12)
 plt.title('Distribution of Opening Price: Competitive vs Non-Competitive Auctions\n(Outliers Removed)', fontsize=14)
 plt.tight_layout()
 plt.show()
+```
+
+## Part d2: Opening Price Distribution Analysis
+
+This section provides a comprehensive analysis of the Opening Price distribution using violin plots to understand how opening prices vary across different auction characteristics.
+
+### Opening Price Distribution by Category
+
+```{python}
+# Violin plot: Opening Price Distribution by Category
+plt.figure(figsize=(14, 6))
+
+# Use a color palette for categories
+categories = ebay_df['Category'].unique()
+palette = sns.color_palette("husl", len(categories))
+
+sns.violinplot(x='Category', y='OpenPrice', data=ebay_df, 
+               hue='Category', palette=palette, inner='quartile', legend=False)
+plt.xlabel('Category', fontsize=12)
+plt.ylabel('Opening Price ($)', fontsize=12)
+plt.title('Distribution of Opening Price by Category', fontsize=14)
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# Summary statistics by category
+print("--- Opening Price Statistics by Category ---")
+category_stats = ebay_df.groupby('Category')['OpenPrice'].agg(['mean', 'median', 'std', 'min', 'max'])
+category_stats = category_stats.round(2)
+print(category_stats.sort_values('median', ascending=False))
+```
+
+### Opening Price Distribution by Auction Duration
+
+```{python}
+# Violin plot: Opening Price Distribution by Duration
+plt.figure(figsize=(10, 6))
+
+duration_palette = {'1': '#3498DB', '3': '#E74C3C', '5': '#2ECC71', '7': '#9B59B6', '10': '#F39C12'}
+durations = sorted(ebay_df['Duration'].unique())
+
+sns.violinplot(x='Duration', y='OpenPrice', data=ebay_df, 
+               hue='Duration', palette='viridis', inner='quartile', order=durations, legend=False)
+plt.xlabel('Auction Duration (Days)', fontsize=12)
+plt.ylabel('Opening Price ($)', fontsize=12)
+plt.title('Distribution of Opening Price by Auction Duration', fontsize=14)
+plt.tight_layout()
+plt.show()
+
+# Summary statistics by duration
+print("--- Opening Price Statistics by Duration ---")
+duration_stats = ebay_df.groupby('Duration')['OpenPrice'].agg(['mean', 'median', 'std', 'count'])
+duration_stats = duration_stats.round(2)
+print(duration_stats)
+```
+
+### Opening Price Distribution by End Day
+
+```{python}
+# Violin plot: Opening Price Distribution by End Day
+day_order = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+days_in_data = [d for d in day_order if d in ebay_df['endDay'].values]
+
+plt.figure(figsize=(12, 6))
+sns.violinplot(x='endDay', y='OpenPrice', data=ebay_df, 
+               hue='endDay', palette='coolwarm', inner='quartile', order=days_in_data, legend=False)
+plt.xlabel('End Day of Week', fontsize=12)
+plt.ylabel('Opening Price ($)', fontsize=12)
+plt.title('Distribution of Opening Price by Auction End Day', fontsize=14)
+plt.tight_layout()
+plt.show()
+
+# Summary statistics by end day
+print("--- Opening Price Statistics by End Day ---")
+endday_stats = ebay_df.groupby('endDay')['OpenPrice'].agg(['mean', 'median', 'std', 'count'])
+endday_stats = endday_stats.round(2)
+print(endday_stats.loc[days_in_data])
+```
+
+### Opening Price Distribution by Currency
+
+```{python}
+# Violin plot: Opening Price Distribution by Currency
+plt.figure(figsize=(10, 6))
+sns.violinplot(x='currency', y='OpenPrice', data=ebay_df, 
+               hue='currency', palette=['#1ABC9C', '#E67E22', '#8E44AD'], inner='quartile', legend=False)
+plt.xlabel('Currency', fontsize=12)
+plt.ylabel('Opening Price', fontsize=12)
+plt.title('Distribution of Opening Price by Currency', fontsize=14)
+plt.tight_layout()
+plt.show()
+
+# Summary statistics by currency
+print("--- Opening Price Statistics by Currency ---")
+currency_stats = ebay_df.groupby('currency')['OpenPrice'].agg(['mean', 'median', 'std', 'count'])
+currency_stats = currency_stats.round(2)
+print(currency_stats)
+```
+
+### Combined Violin Plot: Opening Price by Category and Competitive Status
+
+```{python}
+# Create a combined violin plot showing Category, Opening Price, and Competitive status
+ebay_df['Competitive_Label'] = ebay_df['Competitive'].map({0: 'Non-Competitive', 1: 'Competitive'})
+
+plt.figure(figsize=(16, 7))
+sns.violinplot(x='Category', y='OpenPrice', hue='Competitive_Label', data=ebay_df, 
+               palette={'Non-Competitive': '#E74C3C', 'Competitive': '#27AE60'}, 
+               split=True, inner='quartile')
+plt.xlabel('Category', fontsize=12)
+plt.ylabel('Opening Price ($)', fontsize=12)
+plt.title('Opening Price Distribution by Category and Competitive Status', fontsize=14)
+plt.xticks(rotation=45, ha='right')
+plt.legend(title='Auction Type', loc='upper right')
+plt.tight_layout()
+plt.show()
+```
+
+### Key Observations from Opening Price Distribution
+
+```{python}
+# Calculate and display key observations
+print("=" * 60)
+print("KEY OBSERVATIONS: OPENING PRICE DISTRIBUTION")
+print("=" * 60)
+
+# Overall statistics
+print(f"\n📊 Overall Opening Price Statistics:")
+print(f"   Mean:   ${ebay_df['OpenPrice'].mean():.2f}")
+print(f"   Median: ${ebay_df['OpenPrice'].median():.2f}")
+print(f"   Std:    ${ebay_df['OpenPrice'].std():.2f}")
+print(f"   Range:  ${ebay_df['OpenPrice'].min():.2f} - ${ebay_df['OpenPrice'].max():.2f}")
+
+# Category with highest median opening price
+highest_median_cat = category_stats['median'].idxmax()
+print(f"\n📈 Category with HIGHEST median opening price: {highest_median_cat} (${category_stats.loc[highest_median_cat, 'median']:.2f})")
+
+# Competitive vs Non-Competitive comparison
+comp_stats = ebay_df.groupby('Competitive')['OpenPrice'].agg(['mean', 'median'])
+print(f"\n🏆 Opening Price by Auction Outcome:")
+print(f"   Non-Competitive (0): Mean=${comp_stats.loc[0, 'mean']:.2f}, Median=${comp_stats.loc[0, 'median']:.2f}")
+print(f"   Competitive (1):     Mean=${comp_stats.loc[1, 'mean']:.2f}, Median=${comp_stats.loc[1, 'median']:.2f}")
+
+if comp_stats.loc[0, 'median'] > comp_stats.loc[1, 'median']:
+    print("\n   ⚠️  Non-competitive auctions tend to have HIGHER opening prices")
+    print("      This suggests higher starting prices may discourage bidding competition")
+else:
+    print("\n   ✓ Competitive auctions tend to have higher opening prices")
 ```
 
 ## Part e: Converting Variables to Category Type
